@@ -1,8 +1,8 @@
 class HashMap
-  def initialize(size = 16)
-    @buckets = Array.new(size) { [] }
+  def initialize(initial_size = 16, load_factor = 0.75)
+    @buckets = Array.new(initial_size) { [] }
     @capacity = 0
-    @load_factor = 0.75
+    @load_factor = load_factor
   end
   attr_accessor :buckets
 
@@ -41,14 +41,18 @@ class HashMap
     @capacity += 1
   end
 
-  def get(key, value)
+  def get(key)
     index = hash(key)
     raise IndexError if index.negative? || index >= @buckets.length
     bucket = @buckets[index]
-    bucket.each do |pair|
-      return pair[1] if pair[0] == key
+    if @buckets[index].nil?
+      nil
+    else
+      @buckets[index].each do |entry|
+        return entry[1] if entry[0] == key
+      end
+      nil
     end
-    return nil
   end
 
   def key?(key)
@@ -61,16 +65,18 @@ class HashMap
   def remove(key)
     index = hash(key)
     raise IndexError if index.negative? || index >= @buckets.length
-    bucket = @buckets[index]
 
-    pair_to_delete = @buckets.find{ |pair| pair[0] == key }
-
-    if pair_to_delete
-      bucket.delete(pair_to_delete)
-      @capacity -= 1
-      return pair_to_delete[1]
+    if !@buckets[index].nil?
+      @buckets[index].each_with_index do |entry, i|
+        if entry[0] == key
+          removed_entry = @buckets[index].delete_at(i)
+          @capacity -= 1
+          return removed_entry[1]
+        end
+      end
     end
-    return nil
+
+    nil
   end
   
   def length
@@ -100,68 +106,17 @@ class HashMap
   end
 end
 
+my_hash_map = HashMap.new
+my_hash_map.set("key1", "value1")
+my_hash_map.set("key2", "value2")
 
-class HashSet
-  def initialize(size = 16)
-    @buckets = Array.new(size) { [] }
-    @capacity = 0
-    @load_factor = 0.75
-  end
-  attr_accessor :buckets
+puts my_hash_map.get("key1")  # Output: value1
+puts my_hash_map.key?("key2") # Output: true
 
-  def hash(value)
-    prime_number = 31
-    value.chars.reduce(0) { |acc, char| acc * prime_number + char.ord} % @buckets.length
-  end
+my_hash_map.remove("key1")
+puts my_hash_map.get("key1")  # Output: nil
 
-  def resize_buckets
-    old_bucket = @buckets
-    @buckets = Array.new(@buckets.length * 2) { [] }
-    old_bucket.flatten.each do |bucket|
-      set(bucket[0], bucket[1])
-    end
-  end
+puts my_hash_map.length       # Output: 1
 
-  def add(key)
-    index = hash(key)
-    raise IndexError if index.negative? || index >= @buckets.length
-    bucket = @buckets[index]
-    
-    #Check if the load factor is exceeded
-    if (@capacity / @buckets.length.to_f) > @load_factor
-      resize_buckets
-    end
-
-    #Update the bucket
-    return if bucket.include?(key)
-
-    bucket.push(key)
-    @capacity += 1
-  end
-
-  def key?(key)
-    index = hash(key)
-    raise IndexError if index.negative? || index >= @buckets.length
-    bucket = @buckets[index]
-    bucket.include?(key)
-  end
-
-  def remove(key)
-    index = hash(key)
-    raise IndexError if index.negative? || index >= @buckets.length
-    bucket = @buckets[index]
-    @buckets.delete(key)
-  end
-  
-  def length
-    return @capacity
-  end
-
-  def clear
-    initialize
-  end
-
-  def keys
-    @buckets.flatten
-  end
-end
+my_hash_map.clear
+puts my_hash_map.length       # Output: 0
