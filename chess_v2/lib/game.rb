@@ -35,6 +35,7 @@ class Game
     @board.update(piece_coords, new_coords, piece)
   end
 
+  # Script Method -> Test methods inside
   def select_piece_coordinates
     puts 'What piece would you like to move?'
     input = gets.chomp
@@ -45,6 +46,7 @@ class Game
     retry
   end
 
+  # Script Method -> Test methods inside
   def select_move_coordinates
     puts 'Where would you like to move it?'
     input = gets.chomp
