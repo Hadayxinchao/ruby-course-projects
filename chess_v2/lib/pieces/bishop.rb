@@ -1,11 +1,11 @@
 require_relative 'piece'
 
 # logic for each chess piece
-class Pawn < Piece
+class Bishop < Piece
   attr_reader :symbol, :test, :color
 
   def initialize(color)
     super(color)
-    @symbol = " \u265F "
+    @symbol = " \u265D "
   end
 end

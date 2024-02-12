@@ -1,11 +1,6 @@
-# frozen_string_literal: true
-
-# contains logic for chess board
 class ChessBoard
-  # def initialize(board = initial_placement)
-  def initialize
-    # @board = board
-    @board = Array.new(8) { Array.new(8) }
+  def initialize(board = Array.new(8) { Array.new(8) })
+    @board = board
   end
 
   def to_s
@@ -20,20 +15,27 @@ class ChessBoard
     @board[row][column] = piece
   end
 
-  private
+  def select_piece(row, column)
+    @board[row][column]
+  end
 
-  # def initial_placement
-  #   [
-  #     %w[br bn bb bq bk bb bn br],
-  #     %w[bp bp bp bp bp bp bp bp],
-  #     %w[-- -- -- -- -- -- -- --],
-  #     %w[-- -- -- -- -- -- -- --],
-  #     %w[-- -- -- -- -- -- -- --],
-  #     %w[-- -- -- -- -- -- -- --],
-  #     %w[wp wp wp wp wp wp wp wp],
-  #     %w[wr wn wb wq wk wb wn wr]
-  #   ]
-  # end
+  def initial_placement
+    initial_row(:black, 0)
+    initial_pawn_row(:black, 1)
+    initial_pawn_row(:white, 6)
+    initial_row(:white, 7)
+  end
+
+  private
+  def initial_pawn_row(color, row)
+    8.times { |index| @board[row][index] = Pawn.new(color) }
+  end
+
+  def initial_row(color, row)
+    @board[row] = [
+      Rook.new(color), Knight.new(color), Bishop.new(color), Queen.new(color), King.new(color), Bishop.new(color), Knight.new(color), Rook.new(color)
+    ]
+  end
 
   def print_board
     @board.each_with_index do |row, index|
