@@ -14,14 +14,17 @@ class ChessBoard
     puts
   end
 
-  def update_data(row, column, piece)
-    @data[row][column] = piece
+  def update(original, final, piece)
+    update_final_coordinates(final, piece)
+    update_original_coordinates(original)
   end
 
-  def select_piece(input)
-    translator ||= NotationTranslator.new
-    coords = translator.translate_notation(input)
-    @data[coords[:row]][coords[:column]]
+  def update_final_coordinates(final, piece)
+    @data[final[:row]][final[:column]] = piece
+  end
+
+  def update_original_coordinates(original)
+    @data[original[:row]][original[:column]] = nil
   end
 
   def initial_placement
