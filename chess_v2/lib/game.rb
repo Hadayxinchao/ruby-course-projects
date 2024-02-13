@@ -92,9 +92,9 @@ class Game
 
   # Completed Tests
   def validate_move(coords)
-    unless @board.active_piece.moves.any?([coords[:row], coords[:column]])
-      raise MoveError
-    end
+    return if @board.active_piece.moves.any?([coords[:row], coords[:column]])
+
+    raise MoveError
   end
 
   # Completed Tests

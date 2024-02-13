@@ -35,7 +35,7 @@ class Pawn < Piece
   end
 
   private
-  
+
   def additional_new_move
     movement = color == :white ? -2 : 2
     @moves << [@location[0] + movement, @location[1]]

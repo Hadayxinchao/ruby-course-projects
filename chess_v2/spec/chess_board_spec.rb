@@ -196,7 +196,7 @@ RSpec.describe ChessBoard do
         allow(pawn).to receive(:update_moves)
         allow(pawn).to receive(:moves).and_return([[1, 0], [2, 0]])
       end
-      
+
       it 'returns false' do
         coords = { row: 0, column: 0 }
         result = board_valid.valid_empty_moves?(coords)

@@ -117,7 +117,7 @@ RSpec.describe Game do
       end
 
       it 'does not raise an error' do
-        expect {game_piece.validate_piece_moves({ row: 0, column: 0 }) }.not_to raise_error
+        expect { game_piece.validate_piece_moves({ row: 0, column: 0 }) }.not_to raise_error
       end
     end
 
@@ -127,7 +127,7 @@ RSpec.describe Game do
       end
 
       it 'raises an error' do
-        expect {game_piece.validate_piece_moves({ row: 0, column: 0 }) }.to raise_error(Game::NoAvailableOpenMoves)
+        expect { game_piece.validate_piece_moves({ row: 0, column: 0 }) }.to raise_error(Game::NoAvailableOpenMoves)
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../lib/pieces/pawn'
 
 RSpec.describe Pawn do
@@ -41,7 +43,7 @@ RSpec.describe Pawn do
     end
   end
 
-  describe '#update_captures' do 
+  describe '#update_captures' do
     context 'when pawn is black' do
       context 'when pawn is in the middle of the board' do
         subject(:black_pawn) { described_class.new({ color: :black, location: [1, 4] }) }
@@ -101,4 +103,3 @@ RSpec.describe Pawn do
     end
   end
 end
- 
