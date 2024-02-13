@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'board'
+require_relative 'displayable'
 require_relative 'game'
 require_relative 'notation_translator'
 require_relative 'pieces/piece'
