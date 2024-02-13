@@ -3,7 +3,7 @@
 # logic for each chess piece
 class Piece
   attr_reader :location
-  
+
   def initialize(args)
     @color = args[:color]
     @location = args[:location]
