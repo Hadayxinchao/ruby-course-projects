@@ -69,7 +69,7 @@ RSpec.describe Game do
 
     context 'when board coordinates is nil' do
       it 'raises an error' do
-        expect { game_validate.validate_coordinates({ row: 1, column: 0 }) }.to raise_error(Game::EmptySquareError)
+        expect { game_validate.validate_coordinates({ row: 1, column: 0 }) }.to raise_error(Game::CoordinatesError)
       end
     end
   end
@@ -121,13 +121,13 @@ RSpec.describe Game do
       end
     end
 
-    context 'when piece is invalid' do
+    context 'when piece is not invalid' do
       before do
         allow(board_piece).to receive(:valid_piece?).and_return(false)
       end
 
       it 'raises an error' do
-        expect { game_piece.validate_piece_moves({ row: 0, column: 0 }) }.to raise_error(Game::NoAvailableOpenMoves)
+        expect { game_piece.validate_piece_moves({ row: 0, column: 0 }) }.to raise_error(Game::PieceError)
       end
     end
   end

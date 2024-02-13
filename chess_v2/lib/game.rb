@@ -10,23 +10,23 @@ class Game
   end
 
   # Declares error message when user enters invalid move
-  class EmptySquareError < StandardError
+  class CoordinatesError < StandardError
     def message
-      'Invalid Input! Enter column & row that has a chess piece.'
+      'Invalid coordinates! Enter column & row that has a chess piece.'
     end
   end
 
   # Declares error message when user enters invalid move
   class MoveError < StandardError
     def message
-      'Invalid Input! Enter a valid (dot) column & row'
+      'Invalid coordinates! Enter a valid (dot) column & row'
     end
   end
 
   # Declares error message when user enters invalid move
-  class NoAvailableOpenMoves < StandardError
+  class PieceError < StandardError
     def message
-      'Invalid Input! This piece does not have any available open moves.'
+      'Invalid piece! This piece can not move. Please enter a different column & row.'
     end
   end
 
@@ -46,22 +46,22 @@ class Game
   # Script Method -> Test methods inside
   # Need to test outgoing command message
   def player_turn
-    @board.display_valid_moves(select_piece_coordinates)
-    @board.update(select_move_coordinates)
-    @board.to_s
+    coords = select_piece_coordinates
+    @board.display_valid_moves(coords)
+    # @board.update(select_move_coordinates)
+    # @board.to_s
   end
 
   # Script Method -> No tests needed (test inside methods)
   def select_piece_coordinates
-    puts 'What piece would you like to move?'
-    input = gets.chomp
+    input = user_input('What piece would you like to move?')
     validate_input(input)
     coords = translate_coordinates(input)
-    validate_coordinates(coords)
-    # Need to also check for available captures
-    validate_piece_moves(coords)
-    # validate_piece(coords)
-    coords
+    validate_piece_coordinates(coords)
+    board.update_active_piece(coordinates)
+    validiate_active_piece
+    # coords
+    # sents active piece in board - does not need to return coordinates?
   rescue StandardError => e
     puts e.message
     retry
@@ -73,6 +73,10 @@ class Game
     input = gets.chomp
     validate_input(input)
     coords = translate_coordinates(input)
+    # Need to validate move in the piece
+    # Needs to check for valid capture moves too
+    # Have piece update this moves & captures, then check valid?
+    # Maybe make method in board to verify all cases
     validate_move(coords)
     coords
   rescue StandardError => e
@@ -86,8 +90,8 @@ class Game
   end
 
   # Completed Tests
-  def validate_coordinates(coords)
-    raise EmptySquareError unless @board.data[coords[:row]][coords[:column]]
+  def validate_piece_coordinates(coords)
+    raise CoordinatesError unless @board.data[coords[:row]][coords[:column]]
   end
 
   # Completed Tests
@@ -103,8 +107,18 @@ class Game
     translator.translate_notation(input)
   end
 
-  # Need to test
-  def validate_piece_moves(coordinates)
-    raise NoAvailableOpenMoves unless @board.valid_piece?(coordinates)
+  def validiate_active_piece
+    # raise PieceError unless board.???
+  end
+
+  def validate_piece(coords)
+    # make it the active piece in the board!
+    # piece = @board.data[coords[:row]][coords[:column]]
+    # raise PieceError unless piece.valid_moves?(@board.data)
+  end
+
+  def user_input(phrase)
+    puts phrase
+    gets.chomp
   end
 end

@@ -20,9 +20,14 @@ lib/game.rb -- 5 warnings:
   [78]:UncommunicativeVariableName: Game#select_move_coordinates has the variable name 'e' [https://github.com/troessner/reek/blob/v6.3.0/docs/Uncommunicative-Variable-Name.md]
   [65]:UncommunicativeVariableName: Game#select_piece_coordinates has the variable name 'e' [https://github.com/troessner/reek/blob/v6.3.0/docs/Uncommunicative-Variable-Name.md]
   [101]:UtilityFunction: Game#translate_coordinates doesn't depend on instance state (maybe move it to another class?) [https://github.com/troessner/reek/blob/v6.3.0/docs/Utility-Function.md]
-  
 lib/pieces/pawn.rb -- 4 warnings:
   [33, 34]:DuplicateMethodCall: Pawn#update_captures calls 'row + movement' 2 times [https://github.com/troessner/reek/blob/v6.3.0/docs/Duplicate-Method-Call.md]
   [22, 32, 40]:RepeatedConditional: Pawn tests 'color == :white' at least 3 times [https://github.com/troessner/reek/blob/v6.3.0/docs/Repeated-Conditional.md]
   [6]:TooManyInstanceVariables: Pawn has at least 5 instance variables [https://github.com/troessner/reek/blob/v6.3.0/docs/Too-Many-Instance-Variables.md]
   [28]:TooManyStatements: Pawn#update_captures has approx 7 statements [https://github.com/troessner/reek/blob/v6.3.0/docs/Too-Many-Statements.md]
+20 total warnings
+
+
+[48, 48]:FeatureEnvy: Pawn#valid_capture_moves? refers to 'moves' more than self (maybe move it to another class?) [https://github.com/troessner/reek/blob/v6.0.1/docs/Feature-Envy.md]
+
+[44, 44]:FeatureEnvy: Pawn#valid_empty_moves? refers to 'moves' more than self (maybe move it to another class?) [https://github.com/troessner/reek/blob/v6.0.1/docs/Feature-Envy.md]
