@@ -2,6 +2,7 @@
 
 # contains logic for chess board
 class Game
+  # Declares error message when user enters invalid input
   class InputError < StandardError
     def message
       'Invalid Input! Enter column & row, for example: d2'
@@ -64,9 +65,8 @@ class Game
   end
 
   def validate_move(coords)
-    unless @board.active_piece.moves.any?([coords[:row], coords[:column]])
-      raise MoveError
-    end
+    raise MoveError unless @board.active_piece.moves.any?([coords[:row], coords[:column]])
+
     coords
   end
 
@@ -78,6 +78,7 @@ class Game
   # Completed Tests
   def validate_coordinates(coords)
     raise EmptySquareError unless @board.data[coords[:row]][coords[:column]]
+
     coords
   end
 

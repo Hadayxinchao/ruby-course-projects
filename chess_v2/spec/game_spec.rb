@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require_relative '../lib/game'
 require_relative '../lib/chess_board'
 require_relative '../lib/notation_translator'
 require_relative '../lib/pieces/rook'
 
 RSpec.describe Game do
-   # Declares error message when user enters invalid input
-   class InputError < StandardError
+  # Declares error message when user enters invalid input
+  class InputError < StandardError
     def message
       'Invalid input! Enter column & row, for example: d2'
     end
@@ -21,7 +23,7 @@ RSpec.describe Game do
 
   describe '#validate_input' do
     subject(:game_input) { described_class.new }
-  
+
     context 'when input is valid' do
       it 'does not raise an error' do
         expect { game_input.validate_input('c7') }.not_to raise_error

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # contains logic for chess board
 class ChessBoard
   attr_reader :data, :active_piece
@@ -7,6 +9,7 @@ class ChessBoard
     @active_piece = active_piece
   end
 
+  # Tested
   def display_valid_moves(coordinates)
     @active_piece = data[coordinates[:row]][coordinates[:column]]
     @active_piece.update_moves
@@ -58,21 +61,21 @@ class ChessBoard
   private
 
   def initial_pawn_row(color, number)
-    8.times do |index| 
-      @data[number][index] = Pawn.new({ color: color, location: [number, index] })
+    8.times do |index|
+      @data[number][index] = Pawn.new({ color:, location: [number, index] })
     end
   end
 
   def initial_row(color, number)
     @data[number] = [
-      Rook.new({ color: color, location: [number, 0] }),
-      Knight.new({ color: color, location: [number, 1] }), 
-      Bishop.new({ color: color, location: [number, 2] }),
-      Queen.new({ color: color, location: [number, 3] }), 
-      King.new({ color: color, location: [number, 4] }), 
-      Bishop.new({ color: color, location: [number, 5] }),
-      Knight.new({ color: color, location: [number, 6] }), 
-      Rook.new({ color: color, location: [number, 7] })
+      Rook.new({ color:, location: [number, 0] }),
+      Knight.new({ color:, location: [number, 1] }),
+      Bishop.new({ color:, location: [number, 2] }),
+      Queen.new({ color:, location: [number, 3] }),
+      King.new({ color:, location: [number, 4] }),
+      Bishop.new({ color:, location: [number, 5] }),
+      Knight.new({ color:, location: [number, 6] }),
+      Rook.new({ color:, location: [number, 7] })
     ]
   end
 
@@ -107,7 +110,6 @@ class ChessBoard
       100
     end
   end
-
 
   # 97 = White (chess pieces)
   # 30 = Black (chess pieces)

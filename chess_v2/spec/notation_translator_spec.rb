@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require_relative '../lib/notation_translator'
 
 RSpec.describe NotationTranslator do
   subject(:translator) { described_class.new }
 
-  describe "#translate_position" do
+  describe '#translate_position' do
     it 'return row:0 column:0' do
       user_input = 'a8'
       result = translator.translate_notation(user_input)
