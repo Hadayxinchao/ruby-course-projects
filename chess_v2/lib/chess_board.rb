@@ -4,15 +4,21 @@ class ChessBoard
 
   def initialize(data = Array.new(8) { Array.new(8) })
     @data = data
+    @possible_moves = []
   end
 
   # Only Puts Method -> No test needed
   def to_s
+    system 'clear'
     puts
     puts "\e[36m    a  b  c  d  e  f  g  h \e[0m"
     print_board
     puts "\e[36m    a  b  c  d  e  f  g  h \e[0m"
     puts
+  end
+
+  def update_possible_moves(moves)
+    @possible_moves = moves
   end
 
   # Script Method -> No tests needed (test inside methods)
@@ -42,14 +48,21 @@ class ChessBoard
   private
 
   def initial_pawn_row(color, number)
-    8.times { |index| @data[number][index] = Pawn.new(color) }
+    8.times do |index| 
+      @data[number][index] = Pawn.new({ color: color, location: [number, index] })
+    end
   end
 
   def initial_row(color, number)
     @data[number] = [
-      Rook.new(color), Knight.new(color), Bishop.new(color),
-      Queen.new(color), King.new(color), Bishop.new(color),
-      Knight.new(color), Rook.new(color)
+      Rook.new({ color: color, location: [number, 0] }),
+      Knight.new({ color: color, location: [number, 1] }), 
+      Bishop.new({ color: color, location: [number, 2] }),
+      Queen.new({ color: color, location: [number, 3] }), 
+      King.new({ color: color, location: [number, 4] }), 
+      Bishop.new({ color: color, location: [number, 5] }),
+      Knight.new({ color: color, location: [number, 6] }), 
+      Rook.new({ color: color, location: [number, 7] })
     ]
   end
 
@@ -64,11 +77,19 @@ class ChessBoard
 
   def print_row(row, row_index)
     row.each_with_index do |square, index|
-      index_total = row_index + index
-      background_color = index_total.even? ? 47 : 100
-      # Idea to color possible moves:
-      # background_color = 102 if index == 3 && row_index == 3
+      background_color = select_background(row_index, index)
       print_square(square, background_color)
+    end
+  end
+
+  def select_background(row_index, column_index)
+    index_total = row_index + column_index
+    if @possible_moves.any?([row_index, column_index])
+      102
+    elsif index_total.even?
+      57
+    else
+      100
     end
   end
 

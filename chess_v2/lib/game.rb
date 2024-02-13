@@ -8,9 +8,17 @@ class Game
     end
   end
 
-  class MoveError < StandardError
+  # Declares error message when user enters invalid move
+  class EmptySquareError < StandardError
     def message
       'Invalid Input! Enter column & row that has a chess piece.'
+    end
+  end
+
+  # Declares error message when user enters invalid move
+  class MoveError < StandardError
+    def message
+      'Invalid input! Enter a valid (green) column & row'
     end
   end
 
@@ -31,7 +39,11 @@ class Game
   def player_turn
     piece_coords = select_piece_coordinates
     piece = @board.data[piece_coords[:row]][piece_coords[:column]]
-    new_coords = select_move_coordinates
+    piece.update_moves
+    @board.update_possible_moves(piece.moves)
+    @board.to_s
+    @board.update_possible_moves([])
+    new_coords = select_move_coordinates(piece)
     @board.update(piece_coords, new_coords, piece)
   end
 
@@ -47,14 +59,19 @@ class Game
   end
 
   # Script Method -> No tests needed (test inside methods)
-  def select_move_coordinates
+  def select_move_coordinates(piece)
     puts 'Where would you like to move it?'
     input = gets.chomp
     validate_input(input)
-    translate_coordinates(input)
+    validate_move(piece, translate_coordinates(input))
   rescue StandardError => e
     puts e.message
     retry
+  end
+
+  def validate_move(piece, coords)
+    raise MoveError unless piece.moves.any?([coords[:row], coords[:column]])
+    coords
   end
 
   # Completed Tests
@@ -64,7 +81,7 @@ class Game
 
   # Completed Tests
   def validate_coordinates(coords)
-    raise MoveError unless @board.data[coords[:row]][coords[:column]]
+    raise EmptySquareError unless @board.data[coords[:row]][coords[:column]]
     coords
   end
 

@@ -4,8 +4,8 @@ require_relative 'piece'
 class Bishop < Piece
   attr_reader :symbol, :test, :color
 
-  def initialize(color)
-    super(color)
+  def initialize(args)
+    super(args)
     @symbol = " \u265D "
   end
 end

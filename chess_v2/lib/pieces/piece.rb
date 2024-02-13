@@ -1,6 +1,9 @@
 # logic for each chess piece
 class Piece
-  def initialize(color)
-    @color = color
+  def initialize(args)
+    @color = args[:color]
+    @location = args[:location]
+    @moves = []
+    @moved = false
   end
 end
