@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'displayable.rb'
+require_relative 'displayable'
 
 # contains logic for chess board
 class Board
@@ -33,7 +33,6 @@ class Board
   end
 
   # Only Puts Method -> No tests needed
-  # 36 = Cyan Text (94 light blue looks good too)
   def to_s
     print_chess_game
   end
@@ -42,7 +41,7 @@ class Board
   def update(coords)
     update_final_coordinates(coords)
     update_original_coordinates
-    change_active_pieces(coords)
+    change_active_piece(coords)
     @valid_moves = []
     @valid_captures = []
   end
@@ -54,7 +53,8 @@ class Board
 
   # Tested
   def update_original_coordinates
-    @data[@active_piece.location[0]][@active_piece.location[1]] = nil
+    square = @active_piece.location
+    @data[square[0]][square[1]] = nil
   end
 
   # Tested

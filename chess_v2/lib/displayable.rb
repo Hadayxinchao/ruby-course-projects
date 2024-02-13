@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Manipulates Board's data array into chess board.
 module Displayable
   # 36 = Cyan Text (94 light blue looks good too)
