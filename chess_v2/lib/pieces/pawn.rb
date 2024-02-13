@@ -2,7 +2,7 @@ require_relative 'piece'
 
 # logic for each chess piece
 class Pawn < Piece
-  attr_reader :symbol, :color, :moves
+  attr_reader :symbol, :color, :moves, :location
 
   def initialize(args)
     super(args)
@@ -23,5 +23,10 @@ class Pawn < Piece
       @moves << [row + 2, column] unless @moved
       @moves << [row + 1, column]
     end
+  end
+
+  def update_location(row, column)
+    @location = [row, column]
+    @moved = true
   end
 end
