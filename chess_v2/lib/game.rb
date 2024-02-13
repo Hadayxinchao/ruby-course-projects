@@ -46,10 +46,11 @@ class Game
   # Script Method -> Test methods inside
   # Need to test outgoing command message
   def player_turn
-    coords = select_piece_coordinates
-    @board.display_valid_moves(coords)
-    # @board.update(select_move_coordinates)
-    # @board.to_s
+    select_piece_coordinates
+    @board.to_s
+    move = select_move_coordinates
+    @board.update(move)
+    @board.to_s
   end
 
   # Script Method -> No tests needed (test inside methods)
@@ -58,10 +59,6 @@ class Game
     validate_input(input)
     coords = translate_coordinates(input)
     validate_piece_coordinates(coords)
-    @board.update_active_piece(coordinates)
-    validiate_active_piece
-    # coords
-    # sents active piece in board - does not need to return coordinates?
   rescue StandardError => e
     puts e.message
     retry
@@ -69,8 +66,7 @@ class Game
 
   # Script Method -> No tests needed (test inside methods)
   def select_move_coordinates
-    puts 'Where would you like to move it?'
-    input = gets.chomp
+    input = user_input("Where would you like to move it?")
     validate_input(input)
     coords = translate_coordinates(input)
     # Need to validate move in the piece
@@ -96,9 +92,9 @@ class Game
 
   # Completed Tests
   def validate_move(coords)
-    return if @board.active_piece.moves.any?([coords[:row], coords[:column]])
-
-    raise MoveError
+    unless @board.valid_moves?(coords) || @board.valid_captures?(coords)
+      raise MoveError
+    end
   end
 
   # Completed Tests
@@ -107,15 +103,15 @@ class Game
     translator.translate_notation(input)
   end
 
-  def validiate_active_piece
-    # raise PieceError unless board.???
+  def validate_available_moves
+    raise PieceError unless @board.available_moves?
   end
 
-  def validate_piece(coords)
-    # make it the active piece in the board!
-    # piece = @board.data[coords[:row]][coords[:column]]
-    # raise PieceError unless piece.valid_moves?(@board.data)
-  end
+  # def validate_piece(coords)
+  #   make it the active piece in the board!
+  #   piece = @board.data[coords[:row]][coords[:column]]
+  #   raise PieceError unless piece.valid_moves?(@board.data)
+  # end
 
   def user_input(phrase)
     puts phrase
