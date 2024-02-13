@@ -5,6 +5,7 @@ class ChessBoard
   def initialize(data = Array.new(8) { Array.new(8) })
     @data = data
     @possible_moves = []
+    @piece_to_move = []
   end
 
   # Only Puts Method -> No test needed
@@ -17,8 +18,9 @@ class ChessBoard
     puts
   end
 
-  def update_possible_moves(moves)
-    @possible_moves = moves
+  def update_possible_moves(current_coords, piece_moves)
+    @possible_moves = piece_moves
+    @piece_to_move = current_coords
   end
 
   # Script Method -> No tests needed (test inside methods)
@@ -82,12 +84,15 @@ class ChessBoard
     end
   end
 
+  # 46 = Cyan, 45 = Magenta, 47 = Light Gray, 100 = Dark Gray
   def select_background(row_index, column_index)
     index_total = row_index + column_index
-    if @possible_moves.any?([row_index, column_index])
-      102
+    if @possible_moves.any?([row_index, column_index])  
+      46
+    elsif @piece_to_move == [row_index, column_index]
+      45
     elsif index_total.even?
-      57
+      47
     else
       100
     end
