@@ -82,7 +82,7 @@ class ChessBoard
   def print_row(row, row_index)
     row.each_with_index do |square, index|
       background_color = select_background(row_index, index)
-      print_square(square, background_color)
+      print_square(row_index, index, square, background_color)
     end
   end
 
@@ -105,8 +105,10 @@ class ChessBoard
   # 97 = White (chess pieces)
   # 30 = Black (cheese pieces)
   # 95 = Light Magenta (possible moves) -> 96 light cyan
-  def print_square(square, background)
-    if square
+  def print_square(row_index, column_index, square, background)
+    if @possible_moves.any?([row_index, column_index])
+      color_square(91, background, " \u25CF ")
+    elsif square
       text_color = square.color == :white ? 97 : 30
       color_square(text_color, background, square.symbol)
     else
