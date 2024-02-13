@@ -58,7 +58,7 @@ class Game
     validate_input(input)
     coords = translate_coordinates(input)
     validate_piece_coordinates(coords)
-    board.update_active_piece(coordinates)
+    @board.update_active_piece(coordinates)
     validiate_active_piece
     # coords
     # sents active piece in board - does not need to return coordinates?
