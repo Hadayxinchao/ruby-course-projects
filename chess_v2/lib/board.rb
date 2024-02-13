@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # contains logic for chess board
-class ChessBoard
+class Board
   attr_reader :data, :active_piece
 
   def initialize(data = Array.new(8) { Array.new(8) }, active_piece = nil)
