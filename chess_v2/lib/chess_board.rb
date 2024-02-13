@@ -9,7 +9,7 @@ class ChessBoard
   end
 
   # Only Puts Method -> No test needed
-  # 36 = Cyan Text
+  # 36 = Cyan Text -> 94 Light Blue
   def to_s
     system 'clear'
     puts
@@ -69,7 +69,7 @@ class ChessBoard
     ]
   end
 
-  # 36 = Cyan Text
+  # 36 = Cyan Text -> 94 Light Blue
   def print_board
     @data.each_with_index do |row, index|
       print "\e[36m #{8 - index} \e[0m"
@@ -86,40 +86,25 @@ class ChessBoard
     end
   end
 
-  # 46 = Cyan (active piece to move)
+  # 46 = Cyan (active piece to move) -> 44 blue
+  # 105 = Light Magenta (possible capture background)
+  # 47 = Light Gray (even)
+  # 100 = Dark Gray (odd)
   def select_background(row_index, column_index)
     index_total = row_index + column_index
     if @piece_to_move == [row_index, column_index]
       46
     elsif index_total.even?
-      even_background(row_index, column_index)
-    else
-      odd_background(row_index, column_index)
-    end
-  end
-
-  # 105 = Light Magenta (possible moves)
-  # 47 = Light Gray (default)
-  def even_background(row_index, column_index)
-    if @possible_moves.any?([row_index, column_index])
-      105
-    else
       47
-    end
-  end
-
-  # 44 = Blue (possible moves)
-  # 100 = Dark Gray (default)
-  def odd_background(row_index, column_index)
-    if @possible_moves.any?([row_index, column_index])
-      44
     else
       100
     end
   end
 
+
   # 97 = White (chess pieces)
   # 30 = Black (cheese pieces)
+  # 95 = Light Magenta (possible moves) -> 96 light cyan
   def print_square(square, background)
     if square
       text_color = square.color == :white ? 97 : 30
