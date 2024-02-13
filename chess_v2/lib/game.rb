@@ -19,7 +19,14 @@ class Game
   # Declares error message when user enters invalid move
   class MoveError < StandardError
     def message
-      'Invalid input! Enter a valid (dot) column & row'
+      'Invalid Input! Enter a valid (dot) column & row'
+    end
+  end
+
+  # Declares error message when user enters invalid move
+  class NoAvailableOpenMoves < StandardError
+    def message
+      'Invalid Input! This piece does not have any available open moves.'
     end
   end
 
@@ -32,6 +39,7 @@ class Game
   def play
     @board.initial_placement
     @board.to_s
+    8.times { player_turn }
     player_turn
   end
 
@@ -50,9 +58,10 @@ class Game
     validate_input(input)
     coords = translate_coordinates(input)
     validate_coordinates(coords)
-    # Check to see if that piece can be moved
-    # Need to check for available captures
+    # Need to also check for available captures
+    validate_piece_moves(coords)
     # validate_piece(coords)
+    coords
   rescue StandardError => e
     puts e.message
     retry
@@ -70,13 +79,6 @@ class Game
   end
 
   # Completed Tests
-  def validate_move(coords)
-    raise MoveError unless @board.active_piece.moves.any?([coords[:row], coords[:column]])
-
-    coords
-  end
-
-  # Completed Tests
   def validate_input(input)
     raise InputError unless input.match?(/^[a-h][1-8]$/)
   end
@@ -89,8 +91,22 @@ class Game
   end
 
   # Completed Tests
+  def validate_move(coords)
+    unless @board.active_piece.moves.any?([coords[:row], coords[:column]])
+      raise MoveError
+    end
+
+    coords
+  end
+
+  # Completed Tests
   def translate_coordinates(input)
     translator ||= NotationTranslator.new
     translator.translate_notation(input)
+  end
+
+  # Need to test
+  def validate_piece_moves(coordinates)
+    raise NoAvailableOpenMoves unless @board.valid_piece?(coordinates)
   end
 end

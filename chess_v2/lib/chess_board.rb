@@ -14,8 +14,14 @@ class ChessBoard
     @active_piece = data[coordinates[:row]][coordinates[:column]]
     # Should this be moved out of this method???
     @active_piece.update_moves
+    @active_piece.update_captures
     # Check the piece.moves to also be nil to display dot.
     to_s
+  end
+
+  def valid_piece?(coordinates)
+    # use piece instead of coordinates?
+    valid_empty_moves?(coordinates) || valid_capture_moves?(coordinates)
   end
 
   # Tested
@@ -24,6 +30,13 @@ class ChessBoard
     piece.update_moves
     possible_moves = piece.moves
     possible_moves.any? { |moves| data[moves[0]][moves[1]].nil? }
+  end
+
+  def valid_capture_moves?(coordinates)
+    piece = data[coordinates[:row]][coordinates[:column]]
+    piece.update_captures
+    possible_captures = piece.captures
+    possible_captures.any? { |moves| data[moves[0]][moves[1]] }
   end
 
   # Only Puts Method -> No test needed
@@ -72,20 +85,20 @@ class ChessBoard
 
   def initial_pawn_row(color, number)
     8.times do |index|
-      @data[number][index] = Pawn.new({ color:, location: [number, index] })
+      @data[number][index] = Pawn.new({ color: color, location: [number, index] })
     end
   end
 
   def initial_row(color, number)
     @data[number] = [
-      Rook.new({ color:, location: [number, 0] }),
-      Knight.new({ color:, location: [number, 1] }),
-      Bishop.new({ color:, location: [number, 2] }),
-      Queen.new({ color:, location: [number, 3] }),
-      King.new({ color:, location: [number, 4] }),
-      Bishop.new({ color:, location: [number, 5] }),
-      Knight.new({ color:, location: [number, 6] }),
-      Rook.new({ color:, location: [number, 7] })
+      Rook.new({ color: color, location: [number, 0] }),
+      Knight.new({ color: color, location: [number, 1] }),
+      Bishop.new({ color: color, location: [number, 2] }),
+      Queen.new({ color: color, location: [number, 3] }),
+      King.new({ color: color, location: [number, 4] }),
+      Bishop.new({ color: color, location: [number, 5] }),
+      Knight.new({ color: color, location: [number, 6] }),
+      Rook.new({ color: color, location: [number, 7] })
     ]
   end
 
@@ -114,11 +127,17 @@ class ChessBoard
     index_total = row_index + column_index
     if @active_piece && @active_piece.location == [row_index, column_index]
       46
+    elsif capture_background?(row_index, column_index)
+      101
     elsif index_total.even?
       47
     else
       100
     end
+  end
+
+  def capture_background?(row_index, column_index)
+    @active_piece&.captures&.any?([row_index, column_index]) && @data[row_index][column_index]
   end
 
   # 97 = White (chess pieces)
