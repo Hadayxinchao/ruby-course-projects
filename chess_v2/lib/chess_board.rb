@@ -87,12 +87,27 @@ class ChessBoard
   # 46 = Cyan, 45 = Magenta, 47 = Light Gray, 100 = Dark Gray
   def select_background(row_index, column_index)
     index_total = row_index + column_index
-    if @possible_moves.any?([row_index, column_index])  
+    if @piece_to_move == [row_index, column_index]
       46
-    elsif @piece_to_move == [row_index, column_index]
-      45
     elsif index_total.even?
+      even_background(row_index, column_index)
+    else
+      odd_background(row_index, column_index)
+    end
+  end
+
+  # 107-white, 47-light gray
+  def even_background(row_index, column_index)
+    if @possible_moves.any?([row_index, column_index])
+      103
+    else
       47
+    end
+  end
+
+  def odd_background(row_index, column_index)
+    if @possible_moves.any?([row_index, column_index])
+      44
     else
       100
     end
