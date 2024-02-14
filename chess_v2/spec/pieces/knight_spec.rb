@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../lib/pieces/knight'
 require_relative '../../lib/pieces/piece'
 
@@ -45,7 +47,7 @@ RSpec.describe Knight do
         expect(results).to contain_exactly([1, 2], [1, 4], [2, 1], [2, 5], [4, 1], [4, 5], [5, 2], [5, 4])
       end
     end
-    
+
     context 'during initial board setup' do
       subject(:white_knight) { described_class.new({ color: :whilte, location: [7, 6] }) }
       let(:piece) { instance_double(Piece) }
@@ -175,5 +177,3 @@ RSpec.describe Knight do
     end
   end
 end
-
-

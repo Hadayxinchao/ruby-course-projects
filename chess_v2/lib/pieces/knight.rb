@@ -28,7 +28,7 @@ class Knight < Piece
   def current_captures(board)
     moves = move_possibilities
     result = []
-    moves.each do |move| 
+    moves.each do |move|
       rank = @location[0] + move[0]
       file = @location[1] + move[1]
       next unless rank.between?(0, 7) && file.between?(0, 7)
@@ -37,7 +37,7 @@ class Knight < Piece
     end
     result
   end
-  
+
   def move_possibilities
     [
       [-1, -2], [-1, 2], [1, -2], [1, 2], [2, 1], [2, -1], [-2, 1], [-2, -1]

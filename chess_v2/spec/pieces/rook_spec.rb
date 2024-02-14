@@ -146,6 +146,11 @@ RSpec.describe Rook do
         [
           [nil, nil, nil, nil, nil, nil, nil, nil],
           [nil, black_rook, nil, nil, nil, white_piece, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
           [nil, nil, nil, nil, nil, nil, nil, nil]
         ]
       end
@@ -203,7 +208,7 @@ RSpec.describe Rook do
         expect(results).to be_empty
       end
     end
-    
+
     context 'when 1 opposing piece is up file and ignores piece down file' do
       subject(:white_rook) { described_class.new({ color: :white, location: [4, 7] }) }
       let(:black_piece) { instance_double(Piece) }
