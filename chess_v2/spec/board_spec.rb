@@ -182,7 +182,7 @@ RSpec.describe Board do
     end
   end
 
-  describe '#valid_piece_movement?' do 
+  describe '#valid_piece_movement?' do
     context 'when coordinates matches a valid move' do
       subject(:board_valid) { described_class.new(data_valid, piece, [[1, 0]]) }
       let(:data_valid) { [[piece, nil], [nil, nil]] }

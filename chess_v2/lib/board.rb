@@ -37,7 +37,7 @@ class Board
   def piece?(coords)
     @data[coords[:row]][coords[:column]].is_a?(Piece)
   end
-  
+
   # Script Method -> No tests needed (test inside methods)
   def update(coords)
     update_new_coordinates(coords)
@@ -81,7 +81,7 @@ class Board
   def to_s
     print_chess_game
   end
-  
+
   private
 
   def initial_pawn_row(color, number)
