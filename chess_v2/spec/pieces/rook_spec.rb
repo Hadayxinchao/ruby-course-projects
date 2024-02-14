@@ -152,7 +152,6 @@ RSpec.describe Rook do
 
       before do
         allow(white_piece).to receive(:color).and_return(:white)
-        allow(black_piece).to receive(:color).and_return(:black)
       end
 
       it 'has one capture' do
@@ -289,7 +288,7 @@ RSpec.describe Rook do
       subject(:white_rook) { described_class.new({ color: :white, location: [4, 4] }) }
       let(:black_piece) { instance_double(Piece) }
       let(:white_piece) { instance_double(Piece) }
-      let(:board_two) do
+      let(:board_one) do
         [
           [nil, nil, nil, nil, nil, nil, nil, nil],
           [nil, nil, nil, nil, black_piece, nil, nil, nil],

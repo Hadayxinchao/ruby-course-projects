@@ -19,7 +19,7 @@ class Rook < Piece
 
   def current_captures(board)
     rank = @location[0]
-    [rank_captures(board[rank]), file_captures(board).compact.flatten(1)]
+    [rank_captures(board[rank]), file_captures(board)].compact.flatten(1)
   end
 
   private
@@ -72,14 +72,14 @@ class Rook < Piece
 
   def capture_up(index, row)
     return index if opposing_piece?(index, row)
-    return nil if same_color?(index, row) || index < 8
+    return if same_color?(index, row) || index == 8
 
     capture_up(index + 1, row)
   end
 
   def capture_down(index, row)
     return index if opposing_piece?(index, row) && index != -1
-    return nil if same_color?(index, row) || index > -1
+    return if same_color?(index, row) || index == -1
 
     capture_down(index - 1, row)
   end
