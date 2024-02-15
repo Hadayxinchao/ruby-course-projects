@@ -140,7 +140,7 @@ RSpec.describe Board do
     end
   end
 
-  describe '#active_piece_moveable' do
+  describe '#active_piece_moveable?' do
     subject(:board_moveable) { described_class.new(data_moveable, piece) }
     let(:data_moveable) { [[piece, nil], [nil, nil]] }
     let(:piece) { double(Piece, location: [0, 0]) }
@@ -169,7 +169,7 @@ RSpec.describe Board do
       end
     end
 
-    context 'when there is no current_move or current_captures' do
+    context 'when there is no current_moves or current_captures' do
       before do
         allow(piece).to receive(:current_moves).and_return([])
         allow(piece).to receive(:current_captures).and_return([])
@@ -195,12 +195,24 @@ RSpec.describe Board do
       end
     end
 
+    context 'when coordinates matches a valid capture' do
+      subject(:board_valid) { described_class.new(data_valid, piece, [], [[1, 0]]) }
+      let(:data_valid) { [[piece, nil], [nil, nil]] }
+      let(:piece) { double(Piece, location: [0, 0]) }
+
+      it 'returns true' do
+        coordinates = { row: 1, column: 0 }
+        result = board_valid.valid_piece_movement?(coordinates)
+        expect(result).to be true
+      end
+    end
+
     context 'when coordinates does not matches valid move or capture' do
       subject(:board_valid) { described_class.new(data_valid, piece, [], [[1, 0]]) }
       let(:data_valid) { [[piece, nil], [nil, nil]] }
       let(:piece) { double(Piece, location: [0, 0]) }
 
-      it 'return false' do
+      it 'returns false' do
         coordinates = { row: 2, column: 0 }
         result = board_valid.valid_piece_movement?(coordinates)
         expect(result).to be false
@@ -220,24 +232,29 @@ RSpec.describe Board do
     end
   end
 
-  describe '#reset_active_piece_values' do
+  describe '#reset_board_values' do
     subject(:board_values) { described_class.new(data_values, piece, [[1, 0]], [[0, 1]]) }
     let(:data_values) { [[piece, nil], [nil, nil]] }
     let(:piece) { double(Piece, location: [0, 0]) }
 
+    it 'sets previous_piece to active_piece' do
+      board_values.reset_board_values
+      expect(board_values.previous_piece).to eq(piece)
+    end
+    
     it 'sets active_piece to nil' do
-      board_values.reset_active_piece_values
+      board_values.reset_board_values
       expect(board_values.active_piece).to be_nil
     end
 
     it 'sets valid_moves to be an empty array' do
-      board_values.reset_active_piece_values
+      board_values.reset_board_values
       valid_moves = board_values.instance_variable_get(:@valid_moves)
       expect(valid_moves).to be_empty
     end
 
     it 'sets valid_captures to be an empty array' do
-      board_values.reset_active_piece_values
+      board_values.reset_board_values
       valid_captures = board_values.instance_variable_get(:@valid_captures)
       expect(valid_captures).to be_empty
     end

@@ -4,13 +4,20 @@ require_relative 'piece'
 
 # logic for each chess piece
 class Pawn < Piece
-  attr_reader :symbol, :color, :moves, :location, :captures
+  attr_reader :symbol, :color, :moves, :location, :captures, :en_passant
 
   def initialize(args)
     super(args)
     @symbol = " \u265F "
     @location = args[:location]
     @moved = false
+    @en_passant = false
+  end
+
+  def update_location(row, column)
+    update_en_passant(row)
+    @location = [row, column]
+    @moved = true
   end
 
   # Tested
@@ -26,6 +33,8 @@ class Pawn < Piece
 
   # Tested
   def current_captures(board)
+    # need to check for a piece that can be captured en_passant
+    # black in 4th rank and white in 5th rank might be able to do en_passant.
     captures = []
     rank = @location[0] + rank_direction
     file = @location[1]
@@ -38,6 +47,10 @@ class Pawn < Piece
 
   private
 
+  def update_en_passant(row)
+    @en_passant = row - @location[0] == 2
+  end
+
   def first_move_bonus
     double_rank = @location[0] + (rank_direction * 2)
     file = @location[1]
@@ -48,3 +61,6 @@ class Pawn < Piece
     color == :white ? -1 : 1
   end
 end
+
+# Black in 4th row and White in 5th row can do en passant, to an opposing pawn
+# That opposing piece must have just done it's "double" move
