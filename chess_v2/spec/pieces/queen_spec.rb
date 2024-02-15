@@ -5,9 +5,9 @@ require_relative '../../lib/pieces/piece'
 
 RSpec.describe Queen do
   describe '#current_moves' do
+    let(:piece) { instance_double(Piece) }
     context 'queen is surrounded by pieces' do
       subject(:black_queen) { described_class.new({ color: :black_queen, location: [0, 3] }) }
-      let(:piece) { instance_double(Piece) }
       let(:board) do
         [
           [nil, nil, piece, black_queen, piece, nil, nil, nil],
@@ -29,7 +29,6 @@ RSpec.describe Queen do
 
     context 'queen can only move up rank' do
       subject(:black_queen) { described_class.new({ color: :black, location: [0, 3] }) }
-      let(:piece) { instance_double(Piece) }
       let(:board) do
         [
           [nil, nil, piece, black_queen, piece, nil, nil, nil],
@@ -51,7 +50,6 @@ RSpec.describe Queen do
 
     context 'queen can only move diagonally' do
       subject(:black_queen) { described_class.new({ color: :black, location: [0, 3] }) }
-      let(:piece) { instance_double(Piece) }
       let(:board) do
         [
           [nil, nil, piece, black_queen, piece, nil, nil, nil],
@@ -73,7 +71,6 @@ RSpec.describe Queen do
 
     context 'queen can move any direction' do
       subject(:black_queen) { described_class.new({ color: :black, location: [3, 3] }) }
-      let(:piece) { instance_double(Piece) }
       let(:board) do
         [
           [nil, nil, nil, piece, nil, nil, nil, nil],
@@ -95,9 +92,10 @@ RSpec.describe Queen do
   end
 
   describe '#current_captures' do
+    let(:black_piece) { instance_double(Piece, color: :black) }
+    let(:white_piece) { instance_double(Piece, color: :white) }
     context 'when there are no opposing pieces' do
       subject(:white_queen) { described_class.new({ color: :white, location: [7, 3] }) }
-      let(:white_piece) { instance_double(Piece) }
       let(:board) do
         [
           [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -111,10 +109,6 @@ RSpec.describe Queen do
         ]
       end
 
-      before do
-        allow(white_piece).to receive(:color).and_return(:white)
-      end
-
       it 'has no captures' do
         results = white_queen.current_captures(board)
         expect(results).to be_empty
@@ -123,8 +117,6 @@ RSpec.describe Queen do
 
     context 'when there is one opposing pieces down rank' do
       subject(:white_queen) { described_class.new({ color: :white, location: [7, 3] }) }
-      let(:black_piece) { instance_double(Piece) }
-      let(:white_piece) { instance_double(Piece) }
       let(:board) do
         [
           [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -138,11 +130,6 @@ RSpec.describe Queen do
         ]
       end
 
-      before do
-        allow(black_piece).to receive(:color).and_return(:black)
-        allow(white_piece).to receive(:color).and_return(:white)
-      end
-
       it 'has one capture' do
         results = white_queen.current_captures(board)
         expect(results).to contain_exactly([1, 3])
@@ -151,8 +138,6 @@ RSpec.describe Queen do
 
     context 'when there is one opposing pieces diagonally' do
       subject(:white_queen) { described_class.new({ color: :white, location: [6, 1] }) }
-      let(:black_piece) { instance_double(Piece) }
-      let(:white_piece) { instance_double(Piece) }
       let(:board) do
         [
           [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -166,11 +151,6 @@ RSpec.describe Queen do
         ]
       end
 
-      before do
-        allow(black_piece).to receive(:color).and_return(:black)
-        allow(white_piece).to receive(:color).and_return(:white)
-      end
-
       it 'has one capture' do
         results = white_queen.current_captures(board)
         expect(results).to contain_exactly([2, 5])
@@ -179,8 +159,6 @@ RSpec.describe Queen do
 
     context 'when there is four opposing pieces' do
       subject(:white_queen) { described_class.new({ color: :white, location: [4, 3] }) }
-      let(:black_piece) { instance_double(Piece) }
-      let(:white_piece) { instance_double(Piece) }
       let(:board) do
         [
           [nil, nil, nil, nil, nil, nil, nil, black_piece],
@@ -192,11 +170,6 @@ RSpec.describe Queen do
           [nil, white_piece, nil, white_piece, nil, black_piece, nil, nil],
           [nil, nil, nil, nil, nil, nil, nil, nil]
         ]
-      end
-
-      before do
-        allow(black_piece).to receive(:color).and_return(:black)
-        allow(white_piece).to receive(:color).and_return(:white)
       end
 
       it 'has four captures' do

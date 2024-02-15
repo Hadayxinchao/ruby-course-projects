@@ -26,7 +26,7 @@ class King < Piece
     rank = @location[0] + rank_change
     file = @location[1] + file_change
     return unless valid_location?(rank, file)
-    
+
     [rank, file] unless board[rank][file]
   end
 
@@ -37,7 +37,7 @@ class King < Piece
 
     [rank, file] if opposing_piece?(rank, file, board)
   end
-  
+
   def move_set
     [[0, 1], [0, -1], [-1, 0], [1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]]
   end

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require_relative '../../lib/pieces/king'
 require_relative '../../lib/pieces/piece'
 
 RSpec.describe King do
   describe '#current_moves' do
     let(:piece) { instance_double(Piece) }
-    
+
     context 'when the king is surrounded by pieces' do
       subject(:black_king) { described_class.new({ color: :black, location: [0, 4] }) }
       let(:board) do
@@ -25,7 +27,7 @@ RSpec.describe King do
         expect(results).to be_empty
       end
     end
-    
+
     context 'when the king has two open squares' do
       subject(:black_king) { described_class.new({ color: :black, location: [0, 4] }) }
       let(:board) do
@@ -70,13 +72,8 @@ RSpec.describe King do
   end
 
   describe '#current_captures' do
-    let(:black_piece) { instance_double(Piece) }
-    let(:white_piece) { instance_double(Piece) }
-
-    before do
-      allow(black_piece).to receive(:color).and_return(:black)
-      allow(white_piece).to receive(:color).and_return(:white)
-    end
+    let(:black_piece) { instance_double(Piece, color: :black) }
+    let(:white_piece) { instance_double(Piece, color: :white) }
 
     context 'when the king is surrounded by same-colored pieces' do
       subject(:white_king) { described_class.new({ color: :white, location: [7, 4] }) }
@@ -142,4 +139,3 @@ RSpec.describe King do
     end
   end
 end
-
