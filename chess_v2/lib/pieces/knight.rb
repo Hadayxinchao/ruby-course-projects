@@ -14,15 +14,15 @@ class Knight < Piece
 
   def current_moves(board)
     moves = move_possibilities
-    result = []
+    possibilities = []
     moves.each do |move|
       rank = @location[0] + move[0]
       file = @location[1] + move[1]
       next unless rank.between?(0, 7) && file.between?(0, 7)
 
-      result << [rank, file] unless board[rank][file]
+      possibilities << [rank, file] unless board.data[rank][file]
     end
-    @moves = result
+    @moves = remove_king_check_moves(board, possibilities)
   end
 
   def current_captures(board, _previous_piece)

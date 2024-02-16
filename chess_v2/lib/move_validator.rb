@@ -10,7 +10,6 @@ class MoveValidator
 
   def verify_possible_moves
     location = @current_piece.location
-    # During each iteration, king_location can not be a piece's capture
     king_location = find_king_location
     @possible_moves.select do |move|
       @possible_board.data[location[0]][location[1]] = nil
