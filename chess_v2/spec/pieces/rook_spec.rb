@@ -6,13 +6,12 @@ require_relative '../../lib/board'
 
 RSpec.describe Rook do
   let(:board) { instance_double(Board) }
-
+  let(:piece) { instance_double(Piece) }
   before do
     allow(board).to receive(:add_observer)
   end
 
   describe '#current_moves' do
-    let(:piece) { instance_double(Piece) }
     context 'when 2 increasing ranks are empty before a piece' do
       subject(:black_rook) { described_class.new(board, { color: :black, location: [0, 0] }) }
       let(:black_king) { instance_double(Piece, color: :black, location: [0, 7]) }
@@ -36,7 +35,7 @@ RSpec.describe Rook do
       end
     end
 
-    context 'when 2 increasing ranks are empty before the end of the board' do
+    context 'when 2 increasing ranks are empty before the end of the data' do
       subject(:black_rook) { described_class.new(board, { color: :black, location: [0, 5] }) }
       let(:black_king) { instance_double(Piece, color: :black, location: [0, 0]) }
       let(:data) do
@@ -210,9 +209,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has one capture' do
-        results = black_rook.current_captures(data, white_piece)
-        expect(results).to contain_exactly([1, 5])
+        black_rook.current_captures(board)
+        captures = black_rook.captures
+        expect(captures).to contain_exactly([1, 5])
       end
     end
 
@@ -226,9 +230,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has one capture' do
-        results = black_rook.current_captures(data, white_piece)
-        expect(results).to contain_exactly([1, 0])
+        black_rook.current_captures(board)
+        captures = black_rook.captures
+        expect(captures).to contain_exactly([1, 0])
       end
     end
 
@@ -242,9 +251,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has no captures' do
-        results = black_rook.current_captures(data, white_piece)
-        expect(results).to be_empty
+        black_rook.current_captures(board)
+        captures = black_rook.captures
+        expect(captures).to be_empty
       end
     end
 
@@ -263,9 +277,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has 1 captures' do
-        results = white_rook.current_captures(data, black_piece)
-        expect(results).to contain_exactly([7, 7])
+        white_rook.current_captures(board)
+        captures = white_rook.captures
+        expect(captures).to contain_exactly([7, 7])
       end
     end
 
@@ -284,9 +303,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has 1 captures' do
-        results = white_rook.current_captures(data, black_piece)
-        expect(results).to contain_exactly([0, 2])
+        white_rook.current_captures(board)
+        captures = white_rook.captures
+        expect(captures).to contain_exactly([0, 2])
       end
     end
 
@@ -305,9 +329,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has 2 captures' do
-        results = white_rook.current_captures(data, black_piece)
-        expect(results).to contain_exactly([3, 1], [6, 3])
+        white_rook.current_captures(board)
+        captures = white_rook.captures
+        expect(captures).to contain_exactly([3, 1], [6, 3])
       end
     end
 
@@ -326,9 +355,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has 1 captures' do
-        results = white_rook.current_captures(data, black_piece)
-        expect(results).to contain_exactly([1, 4])
+        white_rook.current_captures(board)
+        captures = white_rook.captures
+        expect(captures).to contain_exactly([1, 4])
       end
     end
   end

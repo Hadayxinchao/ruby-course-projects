@@ -118,9 +118,14 @@ RSpec.describe King do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has no captures' do
-        results = white_king.current_captures(data, black_piece)
-        expect(results).to be_empty
+        white_king.current_captures(board)
+        captures = white_king.captures
+        expect(captures).to be_empty
       end
     end
 
@@ -139,9 +144,14 @@ RSpec.describe King do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has one capture' do
-        results = white_king.current_captures(data, black_piece)
-        expect(results).to contain_exactly([6, 3])
+        white_king.current_captures(board)
+        captures = white_king.captures
+        expect(captures).to contain_exactly([6, 3])
       end
     end
 
@@ -160,9 +170,14 @@ RSpec.describe King do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has two captures' do
-        results = white_king.current_captures(data, black_piece)
-        expect(results).to contain_exactly([4, 3], [5, 1])
+        white_king.current_captures(board)
+        captures = white_king.captures
+        expect(captures).to contain_exactly([4, 3], [5, 1])
       end
     end
   end
