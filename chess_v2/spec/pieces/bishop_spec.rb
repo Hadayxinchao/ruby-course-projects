@@ -199,7 +199,7 @@ RSpec.describe Bishop do
     end
   end
 
-  describe '#current_captures' do
+  describe '#format_valid_captures' do
     let(:black_piece) { instance_double(Piece, color: :black) }
     let(:white_piece) { instance_double(Piece, color: :white) }
 
@@ -224,9 +224,8 @@ RSpec.describe Bishop do
       end
 
       it 'has one captures' do
-        white_bishop.current_captures(board)
-        captures = white_bishop.captures
-        expect(captures).to contain_exactly([5, 0])
+        results = white_bishop.format_valid_captures(board)
+        expect(results).to contain_exactly([5, 0])
       end
     end
 
@@ -249,9 +248,8 @@ RSpec.describe Bishop do
       end
 
       it 'has two captures' do
-        white_bishop.current_captures(board)
-        captures = white_bishop.captures
-        expect(captures).to contain_exactly([0, 6], [6, 0])
+        results = white_bishop.format_valid_captures(board)
+        expect(results).to contain_exactly([0, 6], [6, 0])
       end
     end
 
@@ -275,9 +273,8 @@ RSpec.describe Bishop do
       end
 
       it 'has no moves' do
-        white_bishop.current_captures(board)
-        captures = white_bishop.captures
-        expect(captures).to be_empty
+        results = white_bishop.format_valid_captures(board)
+        expect(results).to be_empty
       end
     end
   end

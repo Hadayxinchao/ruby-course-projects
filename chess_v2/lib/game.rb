@@ -26,7 +26,7 @@ class Game
   # Declares error message when user enters invalid move
   class PieceError < StandardError
     def message
-      'Invalid piece! This piece can not move. Please enter a different column & row.'
+      'Invalid piece! This piece does not have any valid moves. Please enter a different column & row.'
     end
   end
 

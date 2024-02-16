@@ -178,7 +178,7 @@ RSpec.describe Rook do
     end
   end
 
-  describe '#current_captures' do
+  describe '#format_valid_captures' do
     let(:white_piece) { instance_double(Piece, color: :white) }
     let(:black_piece) { instance_double(Piece, color: :black) }
     context 'when 1 opposing piece is up rank' do
@@ -201,9 +201,8 @@ RSpec.describe Rook do
       end
 
       it 'has one capture' do
-        black_rook.current_captures(board)
-        captures = black_rook.captures
-        expect(captures).to contain_exactly([1, 5])
+        results = black_rook.format_valid_captures(board)
+        expect(results).to contain_exactly([1, 5])
       end
     end
 
@@ -222,9 +221,8 @@ RSpec.describe Rook do
       end
 
       it 'has one capture' do
-        black_rook.current_captures(board)
-        captures = black_rook.captures
-        expect(captures).to contain_exactly([1, 0])
+        results = black_rook.format_valid_captures(board)
+        expect(results).to contain_exactly([1, 0])
       end
     end
 
@@ -243,9 +241,8 @@ RSpec.describe Rook do
       end
 
       it 'has no captures' do
-        black_rook.current_captures(board)
-        captures = black_rook.captures
-        expect(captures).to be_empty
+        results = black_rook.format_valid_captures(board)
+        expect(results).to be_empty
       end
     end
 
@@ -269,9 +266,8 @@ RSpec.describe Rook do
       end
 
       it 'has 1 captures' do
-        white_rook.current_captures(board)
-        captures = white_rook.captures
-        expect(captures).to contain_exactly([7, 7])
+        results = white_rook.format_valid_captures(board)
+        expect(results).to contain_exactly([7, 7])
       end
     end
 
@@ -295,9 +291,8 @@ RSpec.describe Rook do
       end
 
       it 'has 1 captures' do
-        white_rook.current_captures(board)
-        captures = white_rook.captures
-        expect(captures).to contain_exactly([0, 2])
+        results = white_rook.format_valid_captures(board)
+        expect(results).to contain_exactly([0, 2])
       end
     end
 
@@ -321,9 +316,8 @@ RSpec.describe Rook do
       end
 
       it 'has 2 captures' do
-        white_rook.current_captures(board)
-        captures = white_rook.captures
-        expect(captures).to contain_exactly([3, 1], [6, 3])
+        results = white_rook.format_valid_captures(board)
+        expect(results).to contain_exactly([3, 1], [6, 3])
       end
     end
 
@@ -347,9 +341,8 @@ RSpec.describe Rook do
       end
 
       it 'has 1 captures' do
-        white_rook.current_captures(board)
-        captures = white_rook.captures
-        expect(captures).to contain_exactly([1, 4])
+        results = white_rook.format_valid_captures(board)
+        expect(results).to contain_exactly([1, 4])
       end
     end
   end

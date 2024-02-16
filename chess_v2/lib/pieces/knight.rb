@@ -32,8 +32,13 @@ class Knight < Piece
     end
     possibilities
   end
-
+  
   def current_captures(board)
+    possibilities = find_valid_captures(board)
+    @captures = remove_king_check_moves(board, possibilities)
+  end
+
+  def find_valid_captures(board)
     moves = move_possibilities
     result = []
     moves.each do |move|

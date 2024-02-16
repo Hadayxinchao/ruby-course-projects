@@ -119,7 +119,7 @@ RSpec.describe Queen do
     end
   end
 
-  describe '#current_captures' do
+  describe '#format_valid_captures' do
     let(:black_piece) { instance_double(Piece, color: :black) }
     let(:white_piece) { instance_double(Piece, color: :white) }
     context 'when there are no opposing pieces' do
@@ -142,9 +142,8 @@ RSpec.describe Queen do
       end
 
       it 'has no captures' do
-        white_queen.current_captures(board)
-        captures = white_queen.captures
-        expect(captures).to be_empty
+        results = white_queen.format_valid_captures(board)
+        expect(results).to be_empty
       end
     end
 
@@ -168,9 +167,8 @@ RSpec.describe Queen do
       end
 
       it 'has one capture' do
-        white_queen.current_captures(board)
-        captures = white_queen.captures
-        expect(captures).to contain_exactly([1, 3])
+        results = white_queen.format_valid_captures(board)
+        expect(results).to contain_exactly([1, 3])
       end
     end
 
@@ -194,9 +192,8 @@ RSpec.describe Queen do
       end
 
       it 'has one capture' do
-        white_queen.current_captures(board)
-        captures = white_queen.captures
-        expect(captures).to contain_exactly([2, 5])
+        results = white_queen.format_valid_captures(board)
+        expect(results).to contain_exactly([2, 5])
       end
     end
 
@@ -220,9 +217,8 @@ RSpec.describe Queen do
       end
 
       it 'has four captures' do
-        white_queen.current_captures(board)
-        captures = white_queen.captures
-        expect(captures).to contain_exactly([0, 7], [1, 3], [4, 7], [6, 5])
+        results = white_queen.format_valid_captures(board)
+        expect(results).to contain_exactly([0, 7], [1, 3], [4, 7], [6, 5])
       end
     end
   end

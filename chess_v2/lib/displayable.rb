@@ -47,7 +47,7 @@ module Displayable
   end
 
   def capture_background?(row, column)
-    @active_piece&.capture&.any?([row, column]) && @data[row][column]
+    @active_piece&.captures&.any?([row, column]) && @data[row][column]
   end
 
   # Font Color ->

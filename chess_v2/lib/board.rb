@@ -65,7 +65,11 @@ class Board
   # Tested
   def update_active_piece_location(coords)
     @active_piece.update_location(coords[:row], coords[:column])
-    @active_piece.update(self)
+    # Is having these pieces updated, or captures updated causing the problem?
+    # Thought these were needed - incomplete data for future turns.
+    # Remove test if not needed?
+    # @active_piece.update(self)
+    # @active_piece.current_captures(self)
   end
 
   # Tested
@@ -139,7 +143,7 @@ class Board
       end
     end
   end
-  
+
   # Checks if there is possible en_passant capture for game warning.
   def en_passant_capture?(coords)
     @previous_piece&.location == [coords[:row], coords[:column]] && en_passant_pawn?

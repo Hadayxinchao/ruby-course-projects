@@ -43,6 +43,11 @@ class Pawn < Piece
   # Tested
   # Can refactor!
   def current_captures(board)
+    possibilities = format_valid_captures(board)
+    @captures = remove_king_check_moves(board, possibilities)
+  end
+
+  def format_valid_captures(board)
     previous_location = board.previous_piece.location if board.previous_piece
     captures = []
     rank = @location[0] + rank_direction
@@ -52,7 +57,7 @@ class Pawn < Piece
     captures << [rank, lower_file] if opposing_piece?(rank, lower_file, board.data)
     captures << [rank, higher_file] if opposing_piece?(rank, higher_file, board.data)
     captures << previous_location if valid_en_passant?(board.previous_piece)
-    @captures = captures
+    captures
   end
 
   # White can only move up and Black can only move down
