@@ -36,7 +36,7 @@ class Piece
 
   # Checks all board move possibilities if a move would put king in check
   def king_check_possibilities(_board, moves)
-    return moves unless moves.size > 1
+    moves unless moves.size > 1
 
     # check = MoveValidator.new(self, board, moves)
     # check.run_possibilities

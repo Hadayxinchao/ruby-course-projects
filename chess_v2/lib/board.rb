@@ -94,7 +94,7 @@ class Board
   # def validate_moves?(data, piece)
   #   king = data.select do |row|
   #     next unless row.contains?
-      
+
   #     row.select do |square|
   #       square && square.color == piece.color && square.class == King
   #     end

@@ -132,7 +132,7 @@ RSpec.describe Bishop do
       before do
         allow(board).to receive(:data).and_return(data)
       end
-      
+
       it 'has two moves' do
         white_bishop.current_moves(board)
         moves = white_bishop.moves
@@ -212,7 +212,7 @@ RSpec.describe Bishop do
           [nil, nil, white_bishop, nil, nil, nil, nil, nil]
         ]
       end
-      
+
       it 'has one captures' do
         results = white_bishop.current_captures(data, black_piece)
         expect(results).to contain_exactly([5, 0])
