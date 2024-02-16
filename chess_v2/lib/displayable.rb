@@ -4,7 +4,7 @@
 module Displayable
   # 36 = Cyan Text (94 light blue looks good too)
   def print_chess_game
-    # system 'clear'
+    system 'clear'
     puts
     puts "\e[36m    a  b  c  d  e  f  g  h \e[0m"
     print_board
@@ -47,7 +47,7 @@ module Displayable
   end
 
   def capture_background?(row, column)
-    @valid_captures&.any?([row, column]) && @data[row][column]
+    @active_piece&.capture&.any?([row, column]) && @data[row][column]
   end
 
   # Font Color ->
