@@ -28,7 +28,7 @@ RSpec.describe MoveValidator do
       end
 
       before do
-        allow(board).to receive(:data).and_return(data) 
+        allow(board).to receive(:data).and_return(data)
         allow(board).to receive(:black_king).and_return(black_king)
         allow(white_queen).to receive(:format_valid_captures).and_return([[2, 4]], [[2, 4]], [[2, 4]], [[2, 4]], [[2, 4], [0, 4]])
       end

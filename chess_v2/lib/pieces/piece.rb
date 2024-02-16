@@ -41,7 +41,7 @@ class Piece
     find_valid_captures(board.data).compact
   end
 
-  # Checks a move if it would put the king in check
+  # Checks each moves/captures if it would put the king in check
   def remove_king_check_moves(board, moves)
     return moves unless moves.size.positive?
 
@@ -52,7 +52,7 @@ class Piece
 
   def update(board)
     current_captures(board)
-    current_moves(board)  
+    current_moves(board)
   end
 
   private
@@ -81,9 +81,9 @@ class Piece
     result
   end
 
-  def find_valid_captures(board)
+  def find_valid_captures(data)
     move_set.inject([]) do |memo, move|
-      memo << create_captures(board, move[0], move[1])
+      memo << create_captures(data, move[0], move[1])
     end
   end
 

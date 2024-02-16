@@ -4,7 +4,7 @@ require_relative 'piece'
 
 # logic for each chess piece
 class Knight < Piece
-  attr_reader :color, :symbol
+  attr_reader :color, :symbol, :moves, :captures
 
   def initialize(board, args)
     board.add_observer(self)
@@ -15,6 +15,7 @@ class Knight < Piece
     @captures = []
   end
 
+  # refactor !!!
   def current_moves(board)
     possibilities = find_valid_moves(board)
     @moves = remove_king_check_moves(board, possibilities)
@@ -32,13 +33,13 @@ class Knight < Piece
     end
     possibilities
   end
-  
+
   def current_captures(board)
-    possibilities = find_valid_captures(board)
+    possibilities = format_valid_captures(board)
     @captures = remove_king_check_moves(board, possibilities)
   end
 
-  def find_valid_captures(board)
+  def format_valid_captures(board)
     moves = move_possibilities
     result = []
     moves.each do |move|
@@ -50,6 +51,8 @@ class Knight < Piece
     end
     @captures = result
   end
+
+  private
 
   def move_possibilities
     [

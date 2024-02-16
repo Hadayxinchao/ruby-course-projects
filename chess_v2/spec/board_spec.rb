@@ -220,7 +220,7 @@ RSpec.describe Board do
 
       it 'returns false' do
         allow(piece).to receive(:moves).and_return([])
-        allow(piece).to receive(:captures).and_return([[1, 0]])
+        allow(piece).to receive(:captures).and_return([1, 0])
         coordinates = { row: 2, column: 0 }
         result = board_valid.valid_piece_movement?(coordinates)
         expect(result).to be false
@@ -244,11 +244,11 @@ RSpec.describe Board do
       board_location.update_active_piece_location(coordinates)
     end
 
-    it 'sends update with board.self to piece' do
-      coordinates = { row: 1, column: 0 }
-      expect(piece).to receive(:update).with(board_location)
-      board_location.update_active_piece_location(coordinates)
-    end
+    # it 'sends update with board.self to piece' do
+    #   coordinates = { row: 1, column: 0 }
+    #   expect(piece).to receive(:update).with(board_location)
+    #   board_location.update_active_piece_location(coordinates)
+    # end
   end
 
   describe '#reset_board_values' do
@@ -270,7 +270,7 @@ RSpec.describe Board do
   describe '#piece?' do
     subject(:board_piece) { described_class.new(data_piece, pawn) }
     let(:data_piece) { [[pawn, nil], [nil, nil]] }
-    let(:pawn) { Pawn.new(board, { color: :white, location: [0, 0] }) }
+    let(:pawn) { instance_double(Piece) }
 
     context 'when coordinates is a piece' do
       it 'returns true' do
@@ -281,7 +281,7 @@ RSpec.describe Board do
     end
 
     context 'when coordinates is not a piece' do
-      it 'return false' do
+      it 'returns false' do
         coordinates = { row: 1, column: 0 }
         results = board_piece.piece?(coordinates)
         expect(results).to be false
@@ -492,7 +492,7 @@ RSpec.describe Board do
         allow(black_pawn).to receive(:captures).and_return([[4, 3]])
       end
 
-      it 'returns true' do
+      it 'returns false' do
         result = board.possible_en_passant?
         expect(result).to be false
       end

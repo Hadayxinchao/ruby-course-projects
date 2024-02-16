@@ -94,8 +94,13 @@ RSpec.describe King do
   end
 
   describe '#current_captures' do
-    let(:black_piece) { instance_double(Piece, color: :black) }
-    let(:white_piece) { instance_double(Piece, color: :white) }
+    let(:black_piece) { instance_double(Piece) }
+    let(:white_piece) { instance_double(Piece) }
+
+    before do
+      allow(black_piece).to receive(:color).and_return(:black)
+      allow(white_piece).to receive(:color).and_return(:white)
+    end
 
     context 'when the king is surrounded by same-colored pieces' do
       subject(:white_king) { described_class.new(board, { color: :white, location: [7, 4] }) }
@@ -117,8 +122,8 @@ RSpec.describe King do
       end
 
       it 'has no captures' do
-        results = white_king.format_valid_captures(board)
-        expect(results).to be_empty
+        result = white_king.format_valid_captures(board)
+        expect(result).to be_empty
       end
     end
 
@@ -142,8 +147,8 @@ RSpec.describe King do
       end
 
       it 'has one capture' do
-        results = white_king.format_valid_captures(board)
-        expect(results).to contain_exactly([6, 3])
+        result = white_king.format_valid_captures(board)
+        expect(result).to contain_exactly([6, 3])
       end
     end
 

@@ -113,8 +113,8 @@ RSpec.describe Bishop do
       end
 
       it 'has three moves' do
-        result = black_bishop.format_valid_moves(board)
-        expect(result).to contain_exactly([4, 2], [3, 1], [2, 0])
+        results = black_bishop.format_valid_moves(board)
+        expect(results).to contain_exactly([4, 2], [3, 1], [2, 0])
       end
     end
 
@@ -188,7 +188,6 @@ RSpec.describe Bishop do
 
       before do
         allow(board).to receive(:data).and_return(data)
-        allow(board).to receive(:white_king).and_return(white_king)
         allow(piece).to receive(:color).and_return(:white)
       end
 

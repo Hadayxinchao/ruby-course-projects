@@ -77,7 +77,7 @@ RSpec.describe Pawn do
             allow(piece).to receive(:color).and_return(:black)
           end
 
-          it 'has no moves' do  
+          it 'has no moves' do
             results = black_pawn.find_valid_moves(board)
             expect(results).to be_empty
           end

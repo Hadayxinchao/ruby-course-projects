@@ -16,7 +16,7 @@ RSpec.describe Queen do
     let(:piece) { instance_double(Piece, color: :black) }
 
     context 'queen is surrounded by pieces' do
-      subject(:black_queen) { described_class.new(board, { color: :black_queen, location: [0, 3] }) }
+      subject(:black_queen) { described_class.new(board, { color: :black, location: [0, 3] }) }
       let(:data) do
         [
           [nil, nil, piece, black_queen, piece, nil, nil, nil],

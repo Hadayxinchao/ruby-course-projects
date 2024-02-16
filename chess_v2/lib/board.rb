@@ -106,7 +106,7 @@ class Board
     @white_king = @data[7][4]
     @black_king = @data[0][4]
     update_all_moves_captures
-  end 
+  end
 
   # Only Puts Method -> No tests needed
   def to_s
@@ -135,10 +135,10 @@ class Board
   end
 
   def update_all_moves_captures
-    # TEST ARE FAILING FROM THIS METHOD!!!
     @data.each do |row|
       row.each do |square|
         next unless square
+
         square.update(self)
       end
     end
