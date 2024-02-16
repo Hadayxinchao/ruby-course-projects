@@ -13,7 +13,6 @@ class Board
     @valid_moves = valid_moves
     @valid_captures = valid_captures
     @previous_piece = nil
-    # keep track of the previous piece moved, for en_passant
   end
 
   # Tested
@@ -24,7 +23,7 @@ class Board
   # Tested
   def active_piece_moveable?
     @valid_moves = @active_piece.current_moves(@data)
-    @valid_captures = @active_piece.current_captures(@data)
+    @valid_captures = @active_piece.current_captures(@data, @previous_piece)
     @valid_moves.size >= 1 || @valid_captures.size >= 1
   end
 
@@ -42,9 +41,13 @@ class Board
 
   # Script Method -> No tests needed (test inside methods)
   def update(coords)
-    update_new_coordinates(coords)
-    remove_old_piece
-    update_active_piece_location(coords)
+    if en_passant_capture?(coords)
+      update_en_passant(coords)
+    else
+      update_new_coordinates(coords)
+      remove_old_piece
+      update_active_piece_location(coords)
+    end
     reset_board_values
   end
 
@@ -66,7 +69,7 @@ class Board
 
   # Tested
   def reset_board_values
-    @previous_piece = active_piece
+    @previous_piece = @active_piece
     @active_piece = nil
     @valid_moves = []
     @valid_captures = []
@@ -104,5 +107,22 @@ class Board
       Knight.new({ color:, location: [number, 6] }),
       Rook.new({ color:, location: [number, 7] })
     ]
+  end
+
+  def en_passant_capture?(coords)
+    @previous_piece&.location == [coords[:row], coords[:column]] && en_passant_pawn?
+  end
+
+  def en_passant_pawn?
+    @previous_piece.symbol == " \u265F " && @active_piece.symbol == " \u265F " && @previous_piece.en_passant
+  end
+
+  def update_en_passant(coords)
+    new_rank = coords[:row] + @active_piece.rank_direction
+    new_coords = { row: new_rank, column: coords[:column] }
+    update_new_coordinates(new_coords)
+    @data[coords[:row]][coords[:column]] = nil
+    remove_old_piece
+    update_active_piece_location(new_coords)
   end
 end

@@ -39,7 +39,7 @@ class Game
   def play
     @board.initial_placement
     @board.to_s
-    player_turn
+    # player_turn
     # Need to switch current player
     12.times { player_turn }
   end
@@ -97,14 +97,14 @@ class Game
   end
 
   # Tested
-  def validate_active_piece
-    raise PieceError unless @board.active_piece_moveable?
-  end
-
-  # Tested
   def translate_coordinates(input)
     translator ||= NotationTranslator.new
     translator.translate_notation(input)
+  end
+
+  # Tested
+  def validate_active_piece
+    raise PieceError unless @board.active_piece_moveable?
   end
 
   private

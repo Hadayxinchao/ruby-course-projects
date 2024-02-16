@@ -110,7 +110,7 @@ RSpec.describe Queen do
       end
 
       it 'has no captures' do
-        results = white_queen.current_captures(board)
+        results = white_queen.current_captures(board, black_piece)
         expect(results).to be_empty
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe Queen do
       end
 
       it 'has one capture' do
-        results = white_queen.current_captures(board)
+        results = white_queen.current_captures(board, black_piece)
         expect(results).to contain_exactly([1, 3])
       end
     end
@@ -152,7 +152,7 @@ RSpec.describe Queen do
       end
 
       it 'has one capture' do
-        results = white_queen.current_captures(board)
+        results = white_queen.current_captures(board, black_piece)
         expect(results).to contain_exactly([2, 5])
       end
     end
@@ -173,7 +173,7 @@ RSpec.describe Queen do
       end
 
       it 'has four captures' do
-        results = white_queen.current_captures(board)
+        results = white_queen.current_captures(board, black_piece)
         expect(results).to contain_exactly([0, 7], [1, 3], [4, 7], [6, 5])
       end
     end

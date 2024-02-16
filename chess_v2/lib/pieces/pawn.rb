@@ -4,7 +4,7 @@ require_relative 'piece'
 
 # logic for each chess piece
 class Pawn < Piece
-  attr_reader :symbol, :color, :moves, :location, :captures, :en_passant
+  attr_reader :symbol, :color, :location, :en_passant
 
   def initialize(args)
     super(args)
@@ -16,7 +16,6 @@ class Pawn < Piece
 
   def update_location(row, column)
     update_en_passant(row)
-    # check to see if en_passant capture is happening?
     @location = [row, column]
     @moved = true
   end
@@ -35,7 +34,6 @@ class Pawn < Piece
   # Tested
   def current_captures(board, previous_piece)
     # need to check for a piece that can be captured en_passant
-    # black in 4th rank and white in 5th rank might be able to do en_passant.
     captures = []
     rank = @location[0] + rank_direction
     file = @location[1]
@@ -47,10 +45,17 @@ class Pawn < Piece
     captures
   end
 
+  # White can only move up and Black can only move down
+  def rank_direction
+    color == :white ? -1 : 1
+  end
+
   private
 
+  # Tested in update_location
+  # Determines whether a move was two spaces (true) or not.
   def update_en_passant(row)
-    @en_passant = row - @location[0] == 2
+    @en_passant = (row - location[0]).abs == 2
   end
 
   def first_move_bonus
@@ -59,19 +64,18 @@ class Pawn < Piece
     [double_rank, file]
   end
 
-  def rank_direction
-    color == :white ? -1 : 1
-  end
-
+  # Tested in current_captures
   # Checks that a piece is a pawn & that is en_passant is true
   def valid_en_passant?(piece)
     en_passant_rank? && symbol == piece.symbol && piece.en_passant
   end
 
   def en_passant_rank?
-    (@location[0] == 3 && color == :white) || (@location[0] == 4 && color == :black)
+    (location[0] == 4 && color == :black) || (location[0] == 3 && color == :white)
   end
 end
 
 # Removes the captures piece & places piece on square in front
 # (as if captured piece moved one square)
+
+# Add warning in game when en_passant is a possibility to know that piece will be in different square!

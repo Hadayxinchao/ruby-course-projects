@@ -415,7 +415,6 @@ RSpec.describe Pawn do
           end
         end
 
-
         context 'when pawn has en_passant but is not previous_piece' do
           subject(:white_pawn) { described_class.new({ color: :white, location: [3, 3] }) }
           let(:black_pawn) { instance_double(Pawn, en_passant: true, location: [3, 4], symbol: " \u265F ") }

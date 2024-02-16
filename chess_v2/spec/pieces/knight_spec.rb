@@ -97,7 +97,7 @@ RSpec.describe Knight do
     context 'when there is one opposing piece to capture' do
       subject(:black_knight) { described_class.new({ color: :black, location: [4, 7] }) }
 
-      let(:board_one) do
+      let(:board) do
         [
           [nil, nil, nil, nil, nil, nil, nil, nil],
           [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -111,14 +111,14 @@ RSpec.describe Knight do
       end
 
       it 'has one capture' do
-        results = black_knight.current_captures(board_one)
+        results = black_knight.current_captures(board, white_piece)
         expect(results).to contain_exactly([3, 5])
       end
     end
 
     context 'when there is four opposing pieces and four pieces to ignore' do
       subject(:black_knight) { described_class.new({ color: :black, location: [3, 3] }) }
-      let(:board_full) do
+      let(:board) do
         [
           [nil, nil, nil, nil, nil, nil, nil, nil],
           [nil, nil, white_piece, nil, white_piece, nil, nil, nil],
@@ -132,14 +132,14 @@ RSpec.describe Knight do
       end
 
       it 'has four captures' do
-        results = black_knight.current_captures(board_full)
+        results = black_knight.current_captures(board, white_piece)
         expect(results).to contain_exactly([1, 2], [1, 4], [5, 2], [5, 4])
       end
     end
 
     context 'when there is four opposing pieces and four empty places to ignore' do
       subject(:black_knight) { described_class.new({ color: :black, location: [3, 3] }) }
-      let(:board_full) do
+      let(:board) do
         [
           [nil, nil, nil, nil, nil, nil, nil, nil],
           [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -153,7 +153,7 @@ RSpec.describe Knight do
       end
 
       it 'has four captures' do
-        results = black_knight.current_captures(board_full)
+        results = black_knight.current_captures(board, white_piece)
         expect(results).to contain_exactly([2, 1], [2, 5], [4, 1], [4, 5])
       end
     end
