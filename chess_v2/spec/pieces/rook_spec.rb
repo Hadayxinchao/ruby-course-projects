@@ -23,9 +23,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has two moves' do
-        results = black_rook.current_moves(data)
-        expect(results).to contain_exactly([0, 1], [0, 2])
+        black_rook.current_moves(board)
+        moves = black_rook.moves
+        expect(moves).to contain_exactly([0, 1], [0, 2])
       end
     end
 
@@ -38,9 +43,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has two moves' do
-        results = black_rook.current_moves(data)
-        expect(results).to contain_exactly([0, 6], [0, 7])
+        black_rook.current_moves(board)
+        moves = black_rook.moves
+        expect(moves).to contain_exactly([0, 6], [0, 7])
       end
     end
 
@@ -53,9 +63,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has four moves' do
-        results = black_rook.current_moves(data)
-        expect(results).to contain_exactly([0, 0], [0, 1], [0, 3], [0, 4])
+        black_rook.current_moves(board)
+        moves = black_rook.moves
+        expect(moves).to contain_exactly([0, 0], [0, 1], [0, 3], [0, 4])
       end
     end
 
@@ -70,9 +85,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has two moves' do
-        results = black_rook.current_moves(data)
-        expect(results).to contain_exactly([1, 2], [2, 2])
+        black_rook.current_moves(board)
+        moves = black_rook.moves
+        expect(moves).to contain_exactly([1, 2], [2, 2])
       end
     end
 
@@ -91,9 +111,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has four moves' do
-        results = black_rook.current_moves(data)
-        expect(results).to contain_exactly([5, 0], [5, 1], [6, 2], [7, 2])
+        black_rook.current_moves(board)
+        moves = black_rook.moves
+        expect(moves).to contain_exactly([5, 0], [5, 1], [6, 2], [7, 2])
       end
     end
 
@@ -112,9 +137,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has six moves' do
-        results = white_rook.current_moves(data)
-        expect(results).to contain_exactly([3, 5], [3, 6], [3, 7], [2, 4], [1, 4], [0, 4])
+        white_rook.current_moves(board)
+        moves = white_rook.moves
+        expect(moves).to contain_exactly([3, 5], [3, 6], [3, 7], [2, 4], [1, 4], [0, 4])
       end
     end
 
@@ -133,9 +163,14 @@ RSpec.describe Rook do
         ]
       end
 
+      before do
+        allow(board).to receive(:data).and_return(data)
+      end
+
       it 'has no moves' do
-        results = white_rook.current_moves(data)
-        expect(results).to be_empty
+        white_rook.current_moves(board)
+        moves = white_rook.moves
+        expect(moves).to be_empty
       end
     end
   end
