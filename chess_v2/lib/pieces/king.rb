@@ -6,7 +6,8 @@ require_relative 'piece'
 class King < Piece
   attr_reader :color, :symbol, :moves, :captures
 
-  def initialize(_board, args)
+  def initialize(board, args)
+    board.add_observer(self)
     @color = args[:color]
     @location = args[:location]
     @symbol = " \u265A "
@@ -15,12 +16,16 @@ class King < Piece
   end
 
   def current_moves(board)
-    possibilities = find_valid_moves(board.data).compact
+    possibilities = format_valid_moves(board)
     @moves = remove_king_check_moves(board, possibilities)
   end
 
   def current_captures(board)
     @captures = find_valid_captures(board.data).compact
+  end
+
+  def format_valid_moves(board)
+    find_valid_moves(board.data).compact
   end
 
   private
