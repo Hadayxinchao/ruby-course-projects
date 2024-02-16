@@ -6,8 +6,8 @@ require_relative 'piece'
 class Knight < Piece
   attr_reader :color, :symbol
 
-  def initialize(args)
-    super(args)
+  def initialize(_board, args)
+    @color = args[:color]
     @location = args[:location]
     @symbol = " \u265E "
   end
@@ -22,7 +22,7 @@ class Knight < Piece
 
       result << [rank, file] unless board[rank][file]
     end
-    result
+    @moves = result
   end
 
   def current_captures(board, _previous_piece)
@@ -35,7 +35,7 @@ class Knight < Piece
 
       result << [rank, file] if opposing_piece?(rank, file, board)
     end
-    result
+    @captures = result
   end
 
   def move_possibilities

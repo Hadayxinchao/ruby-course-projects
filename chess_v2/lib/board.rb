@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require 'observer'
 require_relative 'displayable'
 
 # contains logic for chess board
 class Board
   include Displayable
+  include Observable
   attr_reader :data, :active_piece, :previous_piece
 
   def initialize(data = Array.new(8) { Array.new(8) }, active_piece = nil, valid_moves = [], valid_captures = [])
@@ -22,8 +24,8 @@ class Board
 
   # Tested
   def active_piece_moveable?
-    @valid_moves = @active_piece.current_moves(@data)
-    @valid_captures = @active_piece.current_captures(@data, @previous_piece)
+    @valid_moves = @active_piece.moves
+    @valid_captures = @active_piece.captures
     # Remove any moves that would put King in check!
     @valid_moves.size >= 1 || @valid_captures.size >= 1
   end
@@ -37,7 +39,7 @@ class Board
 
   # Tested
   def piece?(coords)
-    @data[coords[:row]][coords[:column]].is_a?(Piece)
+    @data[coords[:row]][coords[:column]] != nil
   end
 
   # Script Method -> No tests needed (test inside methods)
@@ -93,6 +95,8 @@ class Board
     @active_piece = nil
     @valid_moves = []
     @valid_captures = []
+    changed
+    notify_observers(self)
   end
 
   # Tested
@@ -101,6 +105,18 @@ class Board
     initial_pawn_row(:black, 1)
     initial_pawn_row(:white, 6)
     initial_row(:white, 7)
+    update_all_moves_captures
+  end
+
+  def update_all_moves_captures
+    @data.each do |row|
+      row.each do |square|
+        next unless square
+
+        square.current_moves(@data)
+        square.current_captures(@data, @previous_piece)
+      end
+    end
   end
 
   # Only Puts Method -> No tests needed
@@ -112,20 +128,20 @@ class Board
 
   def initial_pawn_row(color, number)
     8.times do |index|
-      @data[number][index] = Pawn.new({ color:, location: [number, index] })
+      @data[number][index] = Pawn.new(self, { color:, location: [number, index] })
     end
   end
 
   def initial_row(color, number)
     @data[number] = [
-      Rook.new({ color:, location: [number, 0] }),
-      Knight.new({ color:, location: [number, 1] }),
-      Bishop.new({ color:, location: [number, 2] }),
-      Queen.new({ color:, location: [number, 3] }),
-      King.new({ color:, location: [number, 4] }),
-      Bishop.new({ color:, location: [number, 5] }),
-      Knight.new({ color:, location: [number, 6] }),
-      Rook.new({ color:, location: [number, 7] })
+      Rook.new(self, { color:, location: [number, 0] }),
+      Knight.new(self, { color:, location: [number, 1] }),
+      Bishop.new(self, { color:, location: [number, 2] }),
+      Queen.new(self, { color:, location: [number, 3] }),
+      King.new(self, { color:, location: [number, 4] }),
+      Bishop.new(self, { color:, location: [number, 5] }),
+      Knight.new(self, { color:, location: [number, 6] }),
+      Rook.new(self, { color:, location: [number, 7] })
     ]
   end
 

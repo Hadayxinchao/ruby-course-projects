@@ -2,13 +2,15 @@
 
 # logic for each chess piece
 class Piece
-  attr_reader :location, :color, :symbol
+  attr_reader :location, :color, :symbol, :moves, :captures
 
-  def initialize(args)
+  def initialize(board, args)
+    board.add_observer(self)
     @color = args[:color]
     @location = args[:location]
     @symbol = nil
     @moves = []
+    @captures = []
     @moved = false
   end
 
@@ -19,11 +21,16 @@ class Piece
   end
 
   def current_moves(board)
-    find_valid_moves(board).compact.flatten(1)
+    @moves = find_valid_moves(board).compact.flatten(1)
   end
 
   def current_captures(board, _previous_piece)
-    find_valid_captures(board).compact
+    @captures = find_valid_captures(board).compact
+  end
+
+  def update(board)
+    current_moves(board.data)
+    current_captures(board.data, board.previous_piece)
   end
 
   private

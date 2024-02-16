@@ -60,6 +60,7 @@ class Game
     input = user_input('What piece would you like to move?')
     validate_input(input)
     coords = translate_coordinates(input)
+    # Look into creating an array of pieces with moves/captures for below method.
     validate_piece_coordinates(coords)
     @board.update_active_piece(coords)
     validate_active_piece
@@ -116,6 +117,6 @@ class Game
   end
 
   def en_passant_warning
-    "To capture this pawn en passant, enther the \e[91mcapture coordinates\e[0m. Your pawn will be moved to the square in front of it."
+    "To capture this pawn en passant, enter the \e[91mcapture coordinates\e[0m. Your pawn will be moved to the square in front of it."
   end
 end
