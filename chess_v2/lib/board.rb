@@ -24,7 +24,6 @@ class Board
 
   # Tested
   def active_piece_moveable?
-    @active_piece.update(self)
     @active_piece.moves.size >= 1 || @active_piece.captures.size >= 1
   end
 
@@ -66,6 +65,7 @@ class Board
   # Tested
   def update_active_piece_location(coords)
     @active_piece.update_location(coords[:row], coords[:column])
+    @active_piece.update(self)
   end
 
   # Tested
@@ -75,15 +75,15 @@ class Board
 
   # Should this check if either king is in check? IS THIS USED???
   # Tested
-  def check?(king)
-    @data.any? do |row|
-      row.any? do |square|
-        next unless square && square.color != king.color
+  # def check?(king)
+  #   @data.any? do |row|
+  #     row.any? do |square|
+  #       next unless square && square.color != king.color
 
-        square.captures.include?(king.location)
-      end
-    end
-  end
+  #       square.captures.include?(king.location)
+  #     end
+  #   end
+  # end
 
   # Tested
   def reset_board_values
@@ -103,16 +103,6 @@ class Board
     @black_king = @data[0][4]
     update_all_moves_captures
   end 
-
-  def update_all_moves_captures
-    # TEST ARE FAILING FROM THIS METHOD!!!
-    @data.each do |row|
-      row.each do |square|
-        next unless square
-        square.update(self)
-      end
-    end
-  end
 
   # Only Puts Method -> No tests needed
   def to_s
@@ -140,6 +130,16 @@ class Board
     ]
   end
 
+  def update_all_moves_captures
+    # TEST ARE FAILING FROM THIS METHOD!!!
+    @data.each do |row|
+      row.each do |square|
+        next unless square
+        square.update(self)
+      end
+    end
+  end
+  
   # Checks if there is possible en_passant capture for game warning.
   def en_passant_capture?(coords)
     @previous_piece&.location == [coords[:row], coords[:column]] && en_passant_pawn?
