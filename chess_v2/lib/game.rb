@@ -71,7 +71,7 @@ class Game
   # Script Method -> No tests needed (test inside methods)
   # Need to test any outgoing command messages ??
   def select_move_coordinates
-    puts en_passant
+    puts en_passant_warning if @board.possible_en_passant?
     input = user_input('Where would you like to move it?')
     validate_input(input)
     coords = translate_coordinates(input)
