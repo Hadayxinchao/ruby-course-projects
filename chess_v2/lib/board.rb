@@ -24,6 +24,7 @@ class Board
   def active_piece_moveable?
     @valid_moves = @active_piece.current_moves(@data)
     @valid_captures = @active_piece.current_captures(@data, @previous_piece)
+    # Remove any moves that would put King in check!
     @valid_moves.size >= 1 || @valid_captures.size >= 1
   end
 
@@ -70,6 +71,20 @@ class Board
   # Tested
   def possible_en_passant?
     @valid_captures.include?(@previous_piece&.location) && en_passant_pawn?
+  end
+
+  def remove_check_moves_captures; end
+
+  # Should this check if either king is in check?
+  # Tested
+  def check?(king)
+    @data.any? do |row|
+      row.any? do |square|
+        next unless square && square.color != king.color
+
+        square.current_captures(@data, @previous_piece).include?(king.location)
+      end
+    end
   end
 
   # Tested
