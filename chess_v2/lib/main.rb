@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 require_relative 'board'
 require_relative 'displayable'
 require_relative 'game'
@@ -22,14 +20,11 @@ require_relative 'movement/castling_movement'
 game = Game.new
 game.play
 
+# SAVE & LOAD GAME:
+# Idea: Make a saved game for "new" with pieces in original spots?
+
 # REFACTOR:
 # Game class is too big - ok?
 # Board class is still too big - ok?
 # -> move initial placement into module or serialize it?
-# Remove any mention of pry throughout project
 # Remove the reek ideas.md file
-
-# WHEN PLAYING GAME TO TEST/DE-BUG -> MOVE_VALIDATOR:
-# binding.pry if @current_piece.nil?
-# SAVE & LOAD GAME:
-# Idea: Make a saved game for "new" with pieces in original spots?
