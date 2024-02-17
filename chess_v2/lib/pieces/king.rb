@@ -100,7 +100,6 @@ class King < Piece
   # returns true if the specifed files are empty
   def empty_files?(board, files)
     files.none? { |file| board.data[location[0]][file] }
-    files.all? { |file| board.data[location[0]][file].nil? }
   end
 
   # list of possible directions that a king can move

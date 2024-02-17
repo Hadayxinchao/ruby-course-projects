@@ -16,8 +16,7 @@ class Board
     @previous_piece = nil
     @black_king = nil
     @white_king = nil
-    @movement = nil
-    @mode = nil
+    @mode = :user_prompts
   end
 
   # updates the board's active piece to use during a player's turn
@@ -45,8 +44,8 @@ class Board
 
   # script to update the pieces based on movement strategy & reset for next turn
   def update(coords)
-    @movement = create_movement(coords)
-    @movement.update_pieces(self, coords)
+    movement = create_movement(coords)
+    movement.update_pieces(self, coords)
     reset_board_values
   end
 
@@ -124,21 +123,21 @@ class Board
   # creates eight pawns for the specified color and row number
   def initial_pawn_row(color, number)
     8.times do |index|
-      @data[number][index] = Pawn.new(self, { color:, location: [number, index] })
+      @data[number][index] = Pawn.new(self, { color: color, location: [number, index] })
     end
   end
 
   # creates eight pieces for the specified color and row number
   def initial_row(color, number)
     @data[number] = [
-      Rook.new(self, { color:, location: [number, 0] }),
-      Knight.new(self, { color:, location: [number, 1] }),
-      Bishop.new(self, { color:, location: [number, 2] }),
-      Queen.new(self, { color:, location: [number, 3] }),
-      King.new(self, { color:, location: [number, 4] }),
-      Bishop.new(self, { color:, location: [number, 5] }),
-      Knight.new(self, { color:, location: [number, 6] }),
-      Rook.new(self, { color:, location: [number, 7] })
+      Rook.new(self, { color: color, location: [number, 0] }),
+      Knight.new(self, { color: color, location: [number, 1] }),
+      Bishop.new(self, { color: color, location: [number, 2] }),
+      Queen.new(self, { color: color, location: [number, 3] }),
+      King.new(self, { color: color, location: [number, 4] }),
+      Bishop.new(self, { color: color, location: [number, 5] }),
+      Knight.new(self, { color: color, location: [number, 6] }),
+      Rook.new(self, { color: color, location: [number, 7] })
     ]
   end
 
