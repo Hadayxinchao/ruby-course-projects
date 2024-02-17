@@ -4,11 +4,10 @@
 class BasicMovement
   attr_reader :row, :column, :board
 
-  def initialize
-    @board = nil
-    @row = nil
-    @column = nil
-  end
+  def initialize(board = nil, row = nil, column = nil)
+    @board = board
+    @row = row
+    @column = column
 
   # updates instance variables and runs script to update basic moves
   def update_pieces(board, coords)
