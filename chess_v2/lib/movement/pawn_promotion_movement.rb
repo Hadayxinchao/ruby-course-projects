@@ -37,7 +37,7 @@ class PawnPromotionMovement < BasicMovement
       create_promotion_piece(choice)
     end
   end
-  
+
   def remove_pawn_observer
     location = @board.active_piece.location
     @board.delete_observer(@board.data[location[0]][location[1]])
@@ -59,21 +59,21 @@ class PawnPromotionMovement < BasicMovement
     select_promotion_piece
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength
   def create_promotion_piece(choice)
     color = @board.active_piece.color
     case choice.to_i
     when 1
-      Queen.new(@board, { color: color, location: [row, column] })
+      Queen.new(@board, { color:, location: [row, column] })
     when 2
-      Bishop.new(@board, { color: color, location: [row, column] })
+      Bishop.new(@board, { color:, location: [row, column] })
     when 3
-      Knight.new(@board, { color: color, location: [row, column] })
+      Knight.new(@board, { color:, location: [row, column] })
     else
-      Rook.new(@board, { color: color, location: [row, column] })
+      Rook.new(@board, { color:, location: [row, column] })
     end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength
 
   def pawn_promotion_choices
     <<~HEREDOC

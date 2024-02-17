@@ -10,7 +10,7 @@ RSpec.describe MoveValidator do
   describe '#verify_possible_moves' do
     context 'when moving queen can put king in check' do
       subject(:validator) { described_class.new([2, 4], board, [[1, 4], [3, 4], [4, 4], [5, 4], [2, 3], [2, 5]]) }
-      let(:board) { instance_double(Board, data: data, black_king: bkg, check?: false) }
+      let(:board) { instance_double(Board, data:, black_king: bkg, check?: false) }
       let(:bqn) { instance_double(Piece, color: :black, location: [2, 4], symbol: " \u265B ") }
       let(:bkg) { instance_double(Piece, color: :black, location: [0, 4]) }
       let(:bpc) { instance_double(Piece, color: :black) }
@@ -38,7 +38,7 @@ RSpec.describe MoveValidator do
 
     context 'when king is in check at start of turn and only king has valid moves' do
       subject(:validator) { described_class.new([0, 4], board, [[0, 3], [1, 3]]) }
-      let(:board) { instance_double(Board, data: data, black_king: bkg) }
+      let(:board) { instance_double(Board, data:, black_king: bkg) }
       let(:wrk) { instance_double(Piece, color: :white, location: [0, 3]) }
       let(:bkg) { instance_double(Piece, color: :black, location: [0, 4], symbol: " \u265A ") }
       let(:bpc) { instance_double(Piece, color: :black) }
@@ -66,7 +66,7 @@ RSpec.describe MoveValidator do
 
   context 'when king is in check at start of turn and other piece has valid moves' do
     subject(:validator) { described_class.new([0, 6], board, [[0, 5], [4, 6]]) }
-    let(:board) { instance_double(Board, data: data, black_king: bkg) }
+    let(:board) { instance_double(Board, data:, black_king: bkg) }
     let(:brk) { instance_double(Piece, color: :black, location: [0, 6], symbol: " \u265C ") }
     let(:wqn) { instance_double(Piece, color: :white, location: [0, 5]) }
     let(:bkg) { instance_double(Piece, color: :black, location: [0, 4], symbol: " \u265A ") }

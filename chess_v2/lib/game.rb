@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'game_prompts'
+
 # contains logic for chess board
 class Game
   # Declares error message when user enters invalid input
@@ -29,6 +31,8 @@ class Game
       'Invalid piece! This piece does not have any valid moves. Please enter a different column & row.'
     end
   end
+
+  include GamePrompts
 
   def initialize(board = Board.new)
     @board = board
@@ -63,9 +67,7 @@ class Game
   # Script Method -> No tests needed (test inside methods)
   # Need to test any outgoing command messages ??
   def select_piece_coordinates
-    puts king_check_warning if @board.check?(@current_turn)
-    input = user_input('What piece would you like to move?')
-    validate_input(input)
+    input = user_select_piece
     coords = translate_coordinates(input)
     validate_piece_coordinates(coords)
     @board.update_active_piece(coords)
@@ -78,10 +80,7 @@ class Game
   # Script Method -> No tests needed (test inside methods)
   # Need to test any outgoing command messages ??
   def select_move_coordinates
-    puts en_passant_warning if @board.possible_en_passant?
-    puts castling_warning if @board.possible_castling?
-    input = user_input('Where would you like to move it?')
-    validate_input(input)
+    input = user_select_move
     coords = translate_coordinates(input)
     validate_move(coords)
     coords
@@ -90,11 +89,27 @@ class Game
     retry
   end
 
+  def user_select_piece
+    puts king_check_warning if @board.check?(@current_turn)
+    input = user_input(user_piece_selection)
+    validate_input(input)
+    resign_game if input.upcase == 'Q'
+    input
+  end
+
+  def user_select_move
+    puts en_passant_warning if @board.possible_en_passant?
+    puts castling_warning if @board.possible_castling?
+    input = user_input(user_move_selection)
+    validate_input(input)
+    resign_game if input.upcase == 'Q'
+    input
+  end
+
   private
 
   def select_game_mode
-    prompt = "Press \e[36m[1]\e[0m to play computer or \e[36m[2]\e[0m for a 2-player game."
-    user_mode = user_input(prompt)
+    user_mode = user_input(game_mode_choices)
     return user_mode if user_mode.match?(/^[12]$/)
 
     puts 'Input error! Enter 1 or 2'
@@ -143,7 +158,7 @@ class Game
 
   # Tested (private, but used in a public script method)
   def validate_input(input)
-    raise InputError unless input.match?(/^[a-h][1-8]$/)
+    raise InputError unless input.match?(/^[a-h][1-8]$|^[q]$/i)
   end
 
   # Tested (private, but used in a public script method)
@@ -170,30 +185,5 @@ class Game
   def user_input(phrase)
     puts phrase
     gets.chomp
-  end
-
-  def en_passant_warning
-    <<~HEREDOC
-      To capture this pawn en passant, enter the \e[41mcapture coordinates\e[0m.
-      \e[36mYour pawn will be moved to the square in front of it!\e[0m
-    HEREDOC
-  end
-
-  def king_check_warning
-    puts "\e[91mWARNING!\e[0m Your king is currently in check!"
-  end
-
-  def castling_warning
-    puts "\e[91mWARNING!\e[0m If you choose to castle, the rook will move too!"
-  end
-
-  # Tested
-  def final_message
-    previous_color = @current_turn == :white ? 'Black' : 'White'
-    if @board.check?(@current_turn)
-      puts "#{previous_color} wins! The #{@current_turn} king is in checkmate."
-    else
-      puts "#{previous_color} wins in a stalemate!"
-    end
   end
 end

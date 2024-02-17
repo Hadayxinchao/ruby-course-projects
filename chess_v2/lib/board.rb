@@ -68,7 +68,7 @@ class Board
   def possible_en_passant?
     @active_piece&.captures&.include?(@previous_piece&.location) && en_passant_pawn?
   end
-  
+
   # Tested (used in Game)
   def possible_castling?
     @active_piece.symbol == " \u265A " && castling_moves?

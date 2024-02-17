@@ -104,7 +104,7 @@ class Piece
   end
 
   def opposing_piece?(rank, file, data)
-    return unless valid_location?(rank, file)
+    return false unless valid_location?(rank, file)
 
     piece = data[rank][file]
     piece && piece.color != color

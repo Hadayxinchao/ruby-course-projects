@@ -56,13 +56,13 @@ class Pawn < Piece
 
   def single_move(board)
     move = [@location[0] + rank_direction, @location[1]]
-    return move unless board.data[move[0]][move[1]]
+    move unless board.data[move[0]][move[1]]
   end
 
   def double_bonus_move(board)
     double_rank = @location[0] + (rank_direction * 2)
     bonus = [double_rank, @location[1]]
-    return bonus unless invalid_bonus_move?(board, bonus)
+    bonus unless invalid_bonus_move?(board, bonus)
   end
 
   def invalid_bonus_move?(board, bonus)
@@ -74,7 +74,7 @@ class Pawn < Piece
 
   def basic_capture(board, file)
     rank = @location[0] + rank_direction
-    return [rank, file] if opposing_piece?(rank, file, board.data)
+    [rank, file] if opposing_piece?(rank, file, board.data)
   end
 
   def en_passant_capture(previous_piece)
@@ -84,7 +84,7 @@ class Pawn < Piece
     column_difference = (@location[1] - capture[1]).abs
     return unless column_difference == 1
 
-    return capture if valid_en_passant?(previous_piece)
+    capture if valid_en_passant?(previous_piece)
   end
 
   # Will only be true if the last move was the double_bonus_move
