@@ -19,7 +19,7 @@ class Piece
 
   # updates the values of @location and @moved
   def update_location(row, column)
-    @location = [row, column] 
+    @location = [row, column]
     @moved = true
   end
 

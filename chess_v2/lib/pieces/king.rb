@@ -80,7 +80,7 @@ class King < Piece
     moved == false && piece.symbol == " \u265C " && piece.moved == false
   end
 
-   # returns true if neighboring square is empty & king has safe passage
+  # returns true if neighboring square is empty & king has safe passage
   def king_pass_through_safe?(board, file)
     rank = location[0]
     board.data[rank][file].nil? && safe_passage?(board, [rank, file])

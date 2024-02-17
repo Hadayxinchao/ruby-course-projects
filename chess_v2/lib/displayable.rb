@@ -41,7 +41,6 @@ module Displayable
   # 47 = light gray background (even)
   # 100 = dark gray background (odd)
   def select_background(row_index, column_index)
-    index_total = row_index + column_index
     if @active_piece&.location == [row_index, column_index]
       106
     elsif capture_background?(row_index, column_index)

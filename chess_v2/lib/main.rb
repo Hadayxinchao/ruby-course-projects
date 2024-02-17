@@ -5,7 +5,7 @@ require_relative 'displayable'
 require_relative 'game'
 require_relative 'notation_translator'
 require_relative 'move_validator'
-require_relative 'serializer.rb'
+require_relative 'serializer'
 require_relative 'pieces/piece'
 require_relative 'pieces/king'
 require_relative 'pieces/queen'
@@ -24,21 +24,22 @@ extend Serializer
 puts game_mode_choices
 input = select_game_mode
 
-if input == '1'
+case input
+when '1'
   single_player = Game.new(1)
   single_player.setup_board
   single_player.play
-elsif input == '2'
+when '2'
   two_player = Game.new(2)
   two_player.setup_board
   two_player.play
-elsif input == '3'
+when '3'
   load_game.play
 end
 
 # SAVE & LOAD GAME:
 # (done) Make the game save & EXIT only at start of turn
-# It errors when there is not a saved game!
+# (done) It errors when there is not a saved game!
 # Write Tests
 # -> why did board print? did #setup_board & #play mess things up?
 
@@ -47,3 +48,4 @@ end
 # Board class is still too big - ok?
 # -> move initial placement into module or serialize it?
 # Remove the reek ideas.md file
+# Go through game and try to 'break' user input with invalid info

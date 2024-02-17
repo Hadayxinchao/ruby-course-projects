@@ -334,7 +334,7 @@ RSpec.describe Game do
         checkmate = "\e[36mBlack\e[0m wins in a stalemate!\n"
         expect { game.send(:final_message) }.to output(checkmate).to_stdout
       end
-    end 
+    end
   end
 
   describe '#switch_color' do

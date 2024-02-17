@@ -191,7 +191,7 @@ class Board
     (color == :white && rank.zero?) || (color == :black && rank == 7)
   end
 
-   # returns true if active is pawn in rank & previous is a pawn with en passant
+  # returns true if active is pawn in rank & previous is a pawn with en passant
   def en_passant_pawn?
     two_pawns? && @active_piece.en_passant_rank? && @previous_piece.en_passant
   end
