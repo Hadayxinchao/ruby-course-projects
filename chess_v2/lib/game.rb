@@ -32,35 +32,40 @@ class Game
 
   def initialize(board = Board.new)
     @board = board
+    @current_turn = :white
+    @mode = nil
   end
 
   # Public Script Method -> No tests needed (test inside methods)
-  # Need to test any outgoing command messages ??
+  # Need to test any outgoing command messages & behavior of calling player_turn
   def play
+    @mode = select_game_mode
     @board.initial_placement
     @board.to_s
-    # player_turn
-    # Need to switch current player
-    16.times { player_turn }
+    player_turn until @board.game_over?
+    final_message
   end
 
   # Script Method -> Test methods inside
   # Need to test any outgoing command messages ??
   def player_turn
+    puts "#{@current_turn.capitalize}'s turn!"
     select_piece_coordinates
     @board.to_s
     move = select_move_coordinates
     @board.update(move)
+    turn_part_one
     @board.to_s
+    switch_color
   end
 
   # Script Method -> No tests needed (test inside methods)
   # Need to test any outgoing command messages ??
   def select_piece_coordinates
+    puts king_check_warning if @board.check?(@current_turn)
     input = user_input('What piece would you like to move?')
     validate_input(input)
     coords = translate_coordinates(input)
-    # Look into creating an array of pieces with moves/captures for below method.
     validate_piece_coordinates(coords)
     @board.update_active_piece(coords)
     validate_active_piece
@@ -73,7 +78,7 @@ class Game
   # Need to test any outgoing command messages ??
   def select_move_coordinates
     puts en_passant_warning if @board.possible_en_passant?
-    # puts king_check_warning if King is in check!
+    puts castling_warning if @board.possible_castling?
     input = user_input('Where would you like to move it?')
     validate_input(input)
     coords = translate_coordinates(input)
@@ -84,33 +89,70 @@ class Game
     retry
   end
 
-  # Tested
+  private
+
+  def select_game_mode
+    user_mode = user_input('Press [1] to play computer or [2] for 2-player')
+    return user_mode if user_mode.match?(/^[12]$/)
+
+    puts 'Input error! Enter 1 or 2'
+    select_game_mode
+  end
+
+  def turn_part_one
+    select_piece_coordinates
+    @board.to_s
+    move = select_move_coordinates
+    @board.update(move)
+  end
+
+  def turn_part_two_computer
+    coords = computer_select_piece_coordinates
+    @board.update_active_piece(coords)
+    @board.to_s
+    sleep(3)
+    move = computer_select_move_coordinates
+    @board.update(move)
+    sleep(3)
+  end
+
+  def computer_select_piece_coordinates
+    @board.random_black_piece
+  end
+
+  def computer_select_move_coordinates
+    @board.random_black_move
+  end
+
+  def switch_color
+    @current_turn = @current_turn == :white ? :black : :white
+  end
+
+  # Tested (private, but used in a public script method)
   def validate_input(input)
     raise InputError unless input.match?(/^[a-h][1-8]$/)
   end
 
-  # Tested
+  # Tested (private, but used in a public script method)
   def validate_piece_coordinates(coords)
-    raise CoordinatesError unless @board.piece?(coords)
+    raise CoordinatesError unless @board.valid_piece?(coords, @current_turn)
   end
 
-  # Tested
+  # Tested (private, but used in a public script method)
   def validate_move(coords)
     raise MoveError unless @board.valid_piece_movement?(coords)
   end
 
-  # Tested
-  def translate_coordinates(input)
-    translator ||= NotationTranslator.new
-    translator.translate_notation(input)
-  end
-
-  # Tested
+  # Tested (private, but used in a public script method)
   def validate_active_piece
     raise PieceError unless @board.active_piece_moveable?
   end
 
-  private
+  # Tested (private, but used in a public script method)
+  def translate_coordinates(input)
+    translator ||= NotationTranslator.new
+    translator.translate_notation(input)
+  end
 
   def user_input(phrase)
     puts phrase
@@ -118,6 +160,27 @@ class Game
   end
 
   def en_passant_warning
-    "To capture this pawn en passant, enter the \e[91mcapture coordinates\e[0m. Your pawn will be moved to the square in front of it."
+    <<~HEREDOC
+      To capture this pawn en passant, enter the \e[41mcapture coordinates\e[0m.
+      \e[36mYour pawn will be moved to the square in front of it!\e[0m
+    HEREDOC
+  end
+
+  def king_check_warning
+    puts "\e[91mWARNING!\e[0m Your king is currently in check!"
+  end
+
+  def castling_warning
+    puts "\e[91mWARNING!\e[0m If you choose to castle, the rook will move too!"
+  end
+
+  # Tested
+  def final_message
+    previous_color = @current_turn == :white ? 'Black' : 'White'
+    if @board.check?(@current_turn)
+      puts "#{previous_color} wins! The #{@current_turn} king is in checkmate."
+    else
+      puts "#{previous_color} wins in a stalemate!"
+    end
   end
 end

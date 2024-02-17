@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# contains logic for chess board
+# checks possible_moves to determine if it would put King in check
 class MoveValidator
   def initialize(location, board, moves)
     @current_location = location
@@ -10,39 +10,40 @@ class MoveValidator
   end
 
   def verify_possible_moves
-    king_location = find_king_location
-    temp_board = @possible_board
-    temp_board.data[@current_location[0]][@current_location[1]] = nil
+    @possible_board.data[@current_location[0]][@current_location[1]] = nil
     @possible_moves.select do |move|
-      verified_move?(temp_board, move, king_location)
+      legal_move?(move)
     end
-  end
-
-  def verified_move?(board, move, king_location)
-    board.data[move[0]][move[1]] = @current_piece
-    result = opponent_capture_king?(board, king_location)
-    board.data[move[0]][move[1]] = nil
-    result
   end
 
   private
 
-  def find_king_location
-    if @current_piece.color == :black
-      @possible_board.black_king.location
-    else
-      @possible_board.white_king.location
+  def legal_move?(move)
+    temp_board = @possible_board
+    temp_board.data[move[0]][move[1]] = @current_piece
+    king = find_king_location(move)
+    result = safe_king?(king, temp_board)
+    temp_board.data[move[0]][move[1]] = nil
+    result
+  end
+
+  def safe_king?(kings_location, board)
+    pieces = board.data.flatten(1).compact
+    pieces.none? do |piece|
+      next unless piece.color != @current_piece.color
+
+      captures = piece.find_possible_captures(board)
+      captures.include?(kings_location)
     end
   end
 
-  def opponent_capture_king?(board, location)
-    board.data.none? do |row|
-      row.any? do |square|
-        next unless square && square.color != @current_piece.color
-
-        captures = square.format_valid_captures(board)
-        captures.include?(location)
-      end
+  def find_king_location(move)
+    if @current_piece.symbol == " \u265A "
+      move
+    elsif @current_piece.color == :black
+      @possible_board.black_king.location
+    else
+      @possible_board.white_king.location
     end
   end
 end
