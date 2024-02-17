@@ -12,21 +12,21 @@ class Game
     end
   end
 
-  # Declares error message when user enters invalid move
+  # Declares error message when user enters an opponent's piece
   class CoordinatesError < StandardError
     def message
       'Invalid coordinates! Enter column & row that has a chess piece.'
     end
   end
 
-  # Declares error message when user enters invalid move
+  # Declares error message when user enters invalid coordinates
   class MoveError < StandardError
     def message
       'Invalid coordinates! Enter a valid column & row to move.'
     end
   end
 
-  # Declares error message when user enters invalid move
+  # Declares error message when user enters a piece without moves
   class PieceError < StandardError
     def message
       'Invalid piece! This piece does not have any valid moves. Please enter a different column & row.'
@@ -174,7 +174,7 @@ class Game
     translator ||= NotationTranslator.new
     translator.translate_notation(input)
   end
-  
+
   private
 
   # outputs a prompt and returns the user's input

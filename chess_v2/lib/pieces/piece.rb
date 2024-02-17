@@ -73,7 +73,7 @@ class Piece
     raise 'Called abstract method: move_set'
   end
 
-  # creates moves based on each piece's move_set
+  # adds moves until it reaches a piece, based on each piece's move_set
   def create_moves(data, rank_change, file_change)
     rank = @location[0] + rank_change
     file = @location[1] + file_change
@@ -88,7 +88,7 @@ class Piece
     result
   end
 
-  # creates captures based on each piece's move_set
+  # adds a capture when it reaches a piece, based on each piece's move_set
   def create_captures(data, rank_change, file_change)
     rank = @location[0] + rank_change
     file = @location[1] + file_change
@@ -108,7 +108,7 @@ class Piece
 
   # returns true if piece is from the opposing color
   def opposing_piece?(rank, file, data)
-    return false unless valid_location?(rank, file)
+    return unless valid_location?(rank, file)
 
     piece = data[rank][file]
     piece && piece.color != color

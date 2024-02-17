@@ -63,7 +63,7 @@ class Board
     end
   end
 
-  # script to reset for next turn and notify pieces to update moves/captures
+  # resets board and notifes all of the pieces to update moves/captures
   def reset_board_values
     @previous_piece = @active_piece
     @active_piece = nil
