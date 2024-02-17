@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'observer'
-require_relative 'displayable'
+require_relative 'displayable.rb'
 
 # contains logic for chess board
 class Board
@@ -33,7 +33,8 @@ class Board
   def valid_piece_movement?(coords)
     row = coords[:row]
     column = coords[:column]
-    @active_piece.moves.any?([row, column]) || @active_piece.captures.any?([row, column])
+    @active_piece.moves.any?([row, column]) ||
+      @active_piece.captures.any?([row, column])
   end
 
   # returns true if coords are a piece of the specified color
@@ -49,9 +50,31 @@ class Board
     reset_board_values
   end
 
+  # creates movement strategy based on the coordinates of the move
+  def create_movement(coords)
+    if en_passant_capture?(coords)
+      EnPassantMovement.new
+    elsif pawn_promotion?(coords)
+      PawnPromotionMovement.new
+    elsif castling?(coords)
+      CastlingMovement.new
+    else
+      BasicMovement.new
+    end
+  end
+
+  # script to reset for next turn and notify pieces to update moves/captures
+  def reset_board_values
+    @previous_piece = @active_piece
+    @active_piece = nil
+    changed
+    notify_observers(self)
+  end
+
   # returns true if active piece can capture the previous piece en passant
   def possible_en_passant?
-    @active_piece&.captures&.include?(@previous_piece&.location) && en_passant_pawn?
+    @active_piece&.captures&.include?(@previous_piece&.location) &&
+      en_passant_pawn?
   end
 
   # returns true if active piece is a king and can castle with their rook
@@ -123,7 +146,8 @@ class Board
   # creates eight pawns for the specified color and row number
   def initial_pawn_row(color, number)
     8.times do |index|
-      @data[number][index] = Pawn.new(self, { color: color, location: [number, index] })
+      @data[number][index] =
+        Pawn.new(self, { color: color, location: [number, index] })
     end
   end
 
@@ -147,22 +171,10 @@ class Board
     pieces.each { |piece| piece.update(self) }
   end
 
-  # creates movement strategy based on the coordinates of the move
-  def create_movement(coords)
-    if en_passant_capture?(coords)
-      EnPassantMovement.new
-    elsif pawn_promotion?(coords)
-      PawnPromotionMovement.new
-    elsif castling?(coords)
-      CastlingMovement.new
-    else
-      BasicMovement.new
-    end
-  end
-
   # returns true when coords are a pawn captured en_passant
   def en_passant_capture?(coords)
-    @previous_piece&.location == [coords[:row], coords[:column]] && en_passant_pawn?
+    @previous_piece&.location == [coords[:row], coords[:column]] &&
+      en_passant_pawn?
   end
 
   # returns true when active piece is a pawn & coords are its promotion rank
@@ -174,14 +186,6 @@ class Board
   def castling?(coords)
     file_difference = (coords[:column] - @active_piece.location[1]).abs
     @active_piece&.symbol == " \u265A " && file_difference == 2
-  end
-
-  # script to reset for next turn and notify pieces to update moves/captures
-  def reset_board_values
-    @previous_piece = @active_piece
-    @active_piece = nil
-    changed
-    notify_observers(self)
   end
 
   # returns true if color of active piece matches the cooresponding rank
@@ -207,7 +211,8 @@ class Board
     file = location[1]
     king_side = [rank, file + 2]
     queen_side = [rank, file - 2]
-    @active_piece&.moves&.include?(king_side) || @active_piece&.moves&.include?(queen_side)
+    @active_piece&.moves&.include?(king_side) ||
+      @active_piece&.moves&.include?(queen_side)
   end
 
   # returns true if pieces of specified color have no legal moves/captures

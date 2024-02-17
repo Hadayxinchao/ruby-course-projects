@@ -4,7 +4,7 @@
 module Serializer
   # creates a directory and serializes game to file
   def save_game
-    FileUtils.mkdir_p 'saved_games'
+    Dir.mkdir 'saved_games' unless Dir.exist? 'saved_games'
     filename = create_filename
     File.open("saved_games/#{filename}", 'w+') do |file|
       Marshal.dump(self, file)
@@ -61,7 +61,7 @@ module Serializer
     select_saved_game(number)
   end
 
-  # creates an array of saved file names unless there are none
+  # creates an arry of saved file names unless there are none
   def create_game_list
     game_list = []
     return game_list unless Dir.exist? 'saved_games'
