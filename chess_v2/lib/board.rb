@@ -7,8 +7,8 @@ require_relative 'displayable'
 class Board
   include Displayable
   include Observable
-  attr_reader :black_king, :white_king
-  attr_accessor :data, :active_piece, :previous_piece, :game_mode
+  attr_reader :black_king, :white_king, :game_mode
+  attr_accessor :data, :active_piece, :previous_piece
 
   def initialize(data = Array.new(8) { Array.new(8) }, active_piece = nil)
     @data = data
@@ -85,6 +85,7 @@ class Board
     end
   end
 
+  # Tested
   def random_black_piece
     pieces = @data.flatten(1).compact
     black_pieces = pieces.select do |piece|
@@ -96,13 +97,14 @@ class Board
     { row: location[0], column: location[1] }
   end
 
+  # Tested
   def random_black_move
     possibilities = @active_piece.moves + @active_piece.captures
     location = possibilities.sample
     { row: location[0], column: location[1] }
   end
 
-  # NEED TO TEST
+  # Tested
   def update_game_mode
     @game_mode = :computer
   end
@@ -112,8 +114,6 @@ class Board
     return false unless @previous_piece
 
     color = @previous_piece.color == :white ? :black : :white
-    return false unless check?(color)
-
     no_legal_moves_captures?(color)
   end
 

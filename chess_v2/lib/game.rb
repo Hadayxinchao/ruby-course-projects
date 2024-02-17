@@ -95,12 +95,13 @@ class Game
   def select_game_mode
     prompt = "Press \e[36m[1]\e[0m to play computer or \e[36m[2]\e[0m for a 2-player game."
     user_mode = user_input(prompt)
+    return user_mode if user_mode.match?(/^[12]$/)
 
     puts 'Input error! Enter 1 or 2'
     select_game_mode
   end
 
-  # NEED TO TEST
+  # Tested
   def update_game_board_mode
     @mode = :computer
     @board.update_game_mode
