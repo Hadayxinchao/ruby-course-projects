@@ -22,16 +22,17 @@ require_relative 'movement/castling_movement'
 game = Game.new
 game.play
 
-# RANDOM COMPUTER PLAYER:
-# (done) Add a way to end the game early (resign)
-# (done) Add Computer Player option during pawn promotion
-
 # REFACTOR:
 # Game class is too big - ok?
-# Board class is still too big - ok?
-# (done) Game welcome screen
+# Board class is still too big - ok? -> move initial placement into module?
 # Remove testing notes & add method description comments
+# Make sure methods are private if not used outside of class
 # Re-write tests using 3-letter abbreviations, to be able to see clearly ???
+# rename check? to be king_in_check?
+# check comment above each class
+# Remove any mention of pry throughout project
 
+# WHEN PLAYING GAME TO TEST/DE-BUG -> MOVE_VALIDATOR:
+# binding.pry if @current_piece.nil?
 # SAVE & LOAD GAME:
 # Idea: Make a saved game for "new" with pieces in original spots?

@@ -2,7 +2,7 @@
 
 require_relative 'piece'
 
-# logic for each chess piece
+# logic for queen chess piece
 class Queen < Piece
   def initialize(board, args)
     board.add_observer(self)
@@ -15,6 +15,7 @@ class Queen < Piece
 
   private
 
+  # list of possible directions that a king can move
   def move_set
     [[0, 1], [0, -1], [-1, 0], [1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]]
   end
