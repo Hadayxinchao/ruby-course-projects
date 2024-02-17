@@ -8,6 +8,7 @@ class BasicMovement
     @board = board
     @row = row
     @column = column
+  end
 
   # updates instance variables and runs script to update basic moves
   def update_pieces(board, coords)
