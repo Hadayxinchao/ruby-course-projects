@@ -36,8 +36,3 @@ when '2'
 when '3'
   load_game.play
 end
-
-# REFACTOR/QUESIONS:
-# Game class is too big - ok?
-# Board class is still too big - ok?
-# -> move initial placement into module or serialize it?

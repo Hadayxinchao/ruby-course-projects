@@ -18,8 +18,6 @@ class CastlingMovement < BasicMovement
     update_castling_moves
   end
 
-  private
-
   # script to update castling moves
   def update_castling_moves
     update_new_coordinates

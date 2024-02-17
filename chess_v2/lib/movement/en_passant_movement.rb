@@ -18,8 +18,6 @@ class EnPassantMovement < BasicMovement
     update_en_passant_moves
   end
 
-  private
-
   # script to update en passant moves
   def update_en_passant_moves
     remove_capture_piece_observer
